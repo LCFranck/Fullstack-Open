@@ -12,9 +12,9 @@ const Content = (props) => {
     console.log("content: ", props)
     return (
         <div> 
-            <Part coursepart={props.parts[0]} />
-            <Part coursepart={props.parts[1]} />
-            <Part coursepart={props.parts[2]} />
+            <Part part={props.parts[0]} />
+            <Part part={props.parts[1]} />
+            <Part part={props.parts[2]} />
         </div>
     )
 }
@@ -23,7 +23,7 @@ const Part = (props) => {
   console.log("part: ", props)
     return (
       <div> 
-            <p>{props.coursepart.part} {props.coursepart.exercises} </p>
+            <p>{props.part.part} {props.part.exercises} </p>
       </div>
 
     )
