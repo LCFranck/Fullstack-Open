@@ -12,12 +12,24 @@ const Content = (props) => {
     console.log("content: ", props)
     return (
         <div> 
-            <p>{props.parts[0].part} {props.parts[0].exercises} </p>
-            <p>{props.parts[1].part} {props.parts[1].exercises} </p>
-            <p>{props.parts[2].part} {props.parts[2].exercises}</p>
+            <Part coursepart={props.parts[0]} />
+            <Part coursepart={props.parts[1]} />
+            <Part coursepart={props.parts[2]} />
         </div>
     )
 }
+
+const Part = (props) => {
+  console.log("part: ", props)
+    return (
+      <div> 
+            <p>{props.coursepart.part} {props.coursepart.exercises} </p>
+      </div>
+
+    )
+
+}
+
 
 const Total = (props) => {
     console.log("total: ", props)
