@@ -6,7 +6,7 @@ const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 const Statistics = (props) => {
     return (   
         <div>
-          <p> {props.total[0].exercises + props.total[1].exercises + props.total[2].exercises}</p>
+          <p> {props.text}  {props.statistics} </p>
         </div>
 
         )
@@ -41,7 +41,9 @@ const App = (props) => {
       <Button onClick={handleBad} text="bad" />
       <h1>{"statistics"}</h1>
 
-
+      <Statistics statistics = {good} text = {"good"}/>
+      <Statistics statistics = {neutral} text = {"neutral"}/>
+      <Statistics statistics = {bad} text = {"bad"} />
 
     </div>
   )
