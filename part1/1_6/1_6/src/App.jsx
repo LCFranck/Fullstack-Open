@@ -10,8 +10,6 @@ const StatisticLine = (props) => {
           <td>{props.statistics}</td>
         </tr>
         )
-
-
 }
 
 
