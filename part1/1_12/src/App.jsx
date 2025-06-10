@@ -4,6 +4,7 @@ import { useState } from 'react'
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
 
 
+const getRandomInt = (max) => Math.floor(Math.random() * max);
 
 
 const App = () => {
@@ -17,18 +18,45 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
-  const [selected, setSelected] = useState(0)
 
-   const handlePress = () => {
-    console.log('Button pressed' )
+  const [allVotes, setVotes] = useState([0,0,0,0,0,0,0,0])
+  const [selected, setSelected] = useState(0)
+  const [highestVote, setHighest] = useState(0)
+
+
+
+  const handleVote = () => {
+    console.log('Vote Button pressed', selected )
+    const copy = [...allVotes]
+      // increment the value in position 2 by one
+    copy[selected] += 1  
+    setVotes(copy)
+
+    if (allVotes[selected] >= allVotes[highestVote]) {
+      setHighest(selected)
+    }
+
+}
+
+
+
+
+  const handlePress = () => {
+  console.log('Button pressed' )
+  const newValue = getRandomInt(anecdotes.length)
+  setSelected(newValue)
   }
 
   return (
     <div>
-
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
+      <p>has {allVotes[selected]} votes</p>
+      <Button onClick={handleVote} text="Vote" />
       <Button onClick={handlePress} text="next anecdote" />
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[highestVote]}</p>
+
 
     </div>
   )
