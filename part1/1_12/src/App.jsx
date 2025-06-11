@@ -2,8 +2,6 @@ import { useState } from 'react'
 
 
 const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
-
-
 const getRandomInt = (max) => Math.floor(Math.random() * max);
 
 
@@ -19,7 +17,7 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
 
-  const [allVotes, setVotes] = useState([0,0,0,0,0,0,0,0])
+  const [allVotes, setVotes] = useState(Array(anecdotes.length).fill(0))
   const [selected, setSelected] = useState(0)
   const [highestVote, setHighest] = useState(0)
 
@@ -35,16 +33,13 @@ const App = () => {
     if (allVotes[selected] >= allVotes[highestVote]) {
       setHighest(selected)
     }
-
-}
-
-
+} 
 
 
   const handlePress = () => {
-  console.log('Button pressed' )
-  const newValue = getRandomInt(anecdotes.length)
-  setSelected(newValue)
+    console.log('Button pressed' )
+    const newValue = getRandomInt(anecdotes.length)
+    setSelected(newValue)
   }
 
   return (
