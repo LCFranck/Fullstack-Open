@@ -1,38 +1,48 @@
 import { useState } from 'react'
+import Note from './components/Note'
 
-const Display = ({ counter }) => <div>{counter}</div>
+const App = (props) => {
+  const [notes, setNotes] = useState(props.notes)
+  const [newNote, setNewNote] = useState('')
+  const [showAll, setShowAll] = useState(true)
 
-const Button = ({ onClick, text }) => <button onClick={onClick}>{text}</button>
-const App = () => {
-  const [counter, setCounter] = useState(0)
+  const addNote = (event) => {
+    event.preventDefault()
+    const noteObject = {
+      content: newNote,
+      important: Math.random() > 0.5,
+      id: String(notes.length + 1),
+    }
 
-  console.log('rendering with counter value', counter)
-
-  const increaseByOne = () => {
-
-    console.log('increasing, value before', counter)
-    setCounter(counter + 1)
+    setNotes(notes.concat(noteObject))
+    setNewNote('')
   }
 
-  const decreaseByOne = () => { 
-
-    console.log('decreasing, value before', counter)
-    setCounter(counter - 1)
+  const handleNoteChange = (event) => {
+    setNewNote(event.target.value)
   }
 
-  const setToZero = () => {
-
-    console.log('resetting to zero, value before', counter)
-    setCounter(0)
-  }
+  const notesToShow = showAll ? notes : notes.filter((note) => note.important)
 
   return (
     <div>
-      <Display counter={counter} />
-      <Button onClick={increaseByOne} text="plus" />
-      <Button onClick={setToZero} text="zero" />
-      <Button onClick={decreaseByOne} text="minus" />
+      <h1>Notes</h1>
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all'}
+        </button>
+      </div>
+      <ul>
+        {notesToShow.map((note) => (
+          <Note key={note.id} note={note} />
+        ))}
+      </ul>
+      <form onSubmit={addNote}>
+        <input value={newNote} onChange={handleNoteChange} />
+        <button type="submit">save</button>
+      </form>
     </div>
   )
-} 
+}
+
 export default App
