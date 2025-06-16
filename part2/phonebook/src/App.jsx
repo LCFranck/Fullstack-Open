@@ -16,7 +16,6 @@ const App = () => {
 
   const personsToShow = persons.filter(person => person?.name?.toLowerCase().includes(newFilter.toLowerCase())
 )
-  //const personsToShow = persons
 
 
   useEffect(() => {
@@ -30,18 +29,29 @@ const App = () => {
     event.preventDefault()
     console.log(names);
 
-
-    if ((names.includes(newName))){
-      alert(`${newName} is already added to phonebook`);
-      console.log("already includes")
-      return
-    } 
-
-    const personObject = {
+     const personObject = {
       name: newName,
       number: newNumber,
-    //  id: String(persons.length + 1),
     }
+
+    const duplicatePerson = persons.find(p => p.name === newName)
+
+    if (duplicatePerson){
+      if (window.confirm("Name is already saved, do you want to update the phone number?")) {
+        personService.update(duplicatePerson.id, personObject).then(setPersons(persons))
+        console.log("updated")
+        setPersons()
+        setNewName('')
+        setNewNumber('')
+        return
+    } 
+      else {
+        alert(`${newName} is already added to phonebook`);
+        console.log("already includes")
+        return
+    }
+    } 
+
 
     personService.create(personObject).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson))
@@ -49,6 +59,15 @@ const App = () => {
       setNewNumber('')
     })
   }
+
+  ///ÄNDRA HÄR
+  const handleDelete = (person) =>{
+    console.log("deleted!!")
+    personService.remove(person.id).then(() => {
+      setPersons(persons.filter(newPerson => newPerson.id !== person.id))
+
+    })
+    }  
 
 
   const handleFilter = (event) =>{
@@ -79,7 +98,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {personsToShow.map((person) => (
-          <Person key={person.name} person={person} />
+          <Person key={person.name} person={person} handleDelete={() => handleDelete(person)} />
         ))}
       </ul>
     </div>

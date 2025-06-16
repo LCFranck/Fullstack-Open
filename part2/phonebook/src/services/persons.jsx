@@ -8,13 +8,7 @@ const getAll = () => {
 }*/
 
 const getAll = () => {
-  const request = axios.get(baseUrl)
-  const nonExisting = {
-    id: 10000,
-    content: 'This person is not saved to server',
-    important: true,
-  }
-  return request.then((response) => response.data.concat(nonExisting))
+  return axios.get(baseUrl).then((response) => response.data)
 }
 
 const create = (newObject) => {
@@ -26,9 +20,14 @@ const update = (id, newObject) => {
   const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then((response) => response.data)
 }
+const remove = (id) => {
+  return axios.delete(`${baseUrl}/${id}`)
+}
+
 
 export default {
   getAll,
   create,
   update,
+  remove
 }
