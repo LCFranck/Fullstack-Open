@@ -38,11 +38,12 @@ const App = () => {
 
     if (duplicatePerson){
       if (window.confirm("Name is already saved, do you want to update the phone number?")) {
-        personService.update(duplicatePerson.id, personObject).then(setPersons(persons))
-        console.log("updated")
-        setPersons()
+        personService.update(duplicatePerson.id, personObject).then((returnedPerson) => {
+        setPersons(persons.map(p => p.id !== duplicatePerson.id ? p : returnedPerson))
         setNewName('')
-        setNewNumber('')
+        setNewNumber('')})
+
+        console.log("updated")
         return
     } 
       else {
@@ -98,7 +99,7 @@ const App = () => {
       <h2>Numbers</h2>
       <ul>
         {personsToShow.map((person) => (
-          <Person key={person.name} person={person} handleDelete={() => handleDelete(person)} />
+          <Person key={person.id} person={person} handleDelete={() => handleDelete(person)} />
         ))}
       </ul>
     </div>
