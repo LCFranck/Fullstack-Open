@@ -15,7 +15,7 @@ const App = () => {
   const names = persons.map(person => (person.name))
   const [newFilter, setNewFilter] = useState('')
   const [notifMessage, setNotification] = useState(null) //nytt bör ändras
-
+  const [notifType, setNotifType] = useState('success') 
   const personsToShow = persons.filter(person => person?.name?.toLowerCase().includes(newFilter.toLowerCase())
 )
 
@@ -46,7 +46,8 @@ const App = () => {
         setPersons(persons.map(p => p.id !== duplicatePerson.id ? p : returnedPerson))
         setNewName('')
         setNewNumber('')})
-
+        
+        setNotifType('success')
         setNotification(` the person '${duplicatePerson.name}' was added`)        
           setTimeout(() => {setNotification(null)}, 5000)
 
@@ -66,6 +67,7 @@ const App = () => {
       setNewName('')
       setNewNumber('')
 
+      setNotifType('success')
       setNotification(` the person '${personObject.name}' was added`)        
           setTimeout(() => {setNotification(null)}, 5000)
 
@@ -76,9 +78,16 @@ const App = () => {
     console.log("deleted!!")
     
     personService.remove(person.id).then(() => {
+      setNotifType('success')
       setPersons(persons.filter(newPerson => newPerson.id !== person.id))
       setNotification(` the person '${person.name}' was removed`)        
       setTimeout(() => {setNotification(null)}, 5000)
+    })
+      .catch(error => {   
+      setNotifType('error')   
+      setNotification(` the person '${person.name}' was already removed`)        
+      setTimeout(() => {setNotification(null)}, 5000)  
+     // setNotes(notes.filter(n => n.id !== id))    
     })
     }  
 
@@ -97,7 +106,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notifMessage} /> 
+      <Notification message={notifMessage} type={notifType}/> 
         <Filter newFilter={newFilter} handleFilter={handleFilter} />
       <h2>Add a person!</h2>
         <Form 
