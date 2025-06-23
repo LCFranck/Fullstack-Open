@@ -1,6 +1,8 @@
 import Person from './components/Person'
 import Filter from './components/Filter'
 import Form from './components/Form'
+import Notification from './components/Notification'
+
 import { useState, useEffect } from 'react'
 import personService from './services/persons.jsx'
 import axios from 'axios'
@@ -8,11 +10,11 @@ import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([])
-
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const names = persons.map(person => (person.name))
   const [newFilter, setNewFilter] = useState('')
+  const [notifMessage, setNotification] = useState(null) //nytt bör ändras
 
   const personsToShow = persons.filter(person => person?.name?.toLowerCase().includes(newFilter.toLowerCase())
 )
@@ -34,6 +36,8 @@ const App = () => {
       number: newNumber,
     }
 
+
+
     const duplicatePerson = persons.find(p => p.name === newName)
 
     if (duplicatePerson){
@@ -42,6 +46,9 @@ const App = () => {
         setPersons(persons.map(p => p.id !== duplicatePerson.id ? p : returnedPerson))
         setNewName('')
         setNewNumber('')})
+
+        setNotification(` the person '${duplicatePerson.name}' was added`)        
+          setTimeout(() => {setNotification(null)}, 5000)
 
         console.log("updated")
         return
@@ -58,15 +65,20 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
+
+      setNotification(` the person '${personObject.name}' was added`)        
+          setTimeout(() => {setNotification(null)}, 5000)
+
     })
   }
 
-  ///ÄNDRA HÄR
   const handleDelete = (person) =>{
     console.log("deleted!!")
+    
     personService.remove(person.id).then(() => {
       setPersons(persons.filter(newPerson => newPerson.id !== person.id))
-
+      setNotification(` the person '${person.name}' was removed`)        
+      setTimeout(() => {setNotification(null)}, 5000)
     })
     }  
 
@@ -81,10 +93,11 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
-
+// notification e nytt bör ändras
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notifMessage} /> 
         <Filter newFilter={newFilter} handleFilter={handleFilter} />
       <h2>Add a person!</h2>
         <Form 
@@ -104,7 +117,9 @@ const App = () => {
       </ul>
     </div>
   )
+
 }
+
 
 
 export default App
