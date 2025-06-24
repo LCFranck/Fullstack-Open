@@ -10,7 +10,7 @@ const App = () => {
   const [capital, setCapital] = useState('')
   const [area, setArea] = useState('')
   const [flag, setFlag] =  useState(null)
-  const [newFilter, setNewFilter] = useState('un')
+  const [newFilter, setNewFilter] = useState('')
   const [countryList, setCountryList] = useState([])
 
 
@@ -58,9 +58,7 @@ const App = () => {
     
   }, [country])
 
-  const handleChange = (event) => {
-    setValue(event.target.value)
-  }
+ 
 
     const handleFilter = (event) =>{
     setNewFilter(event.target.value)
@@ -76,7 +74,7 @@ const App = () => {
   return (
     <div>
       <form onSubmit={onSearch}>
-        Find coutries: <input filter={newFilter} onChange={handleFilter} />
+        Find coutries: <input value={newFilter} onChange={handleFilter} />
         <button type="submit">search</button>
       </form>
       
