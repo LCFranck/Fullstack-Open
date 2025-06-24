@@ -44,7 +44,6 @@ const App = () => {
         .then(response => {
           setlan(response.data.languages)
 
-         // setCountryData(response.data)
           setCapital(response.data.capital)
           setArea(response.data.area)
           setFlag(response.data.flags.png)
