@@ -87,7 +87,6 @@ const App = () => {
       setNotifType('error')   
       setNotification(` the person '${person.name}' was already removed`)        
       setTimeout(() => {setNotification(null)}, 5000)  
-     // setNotes(notes.filter(n => n.id !== id))    
     })
     }  
 
@@ -102,7 +101,6 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
-// notification e nytt bör ändras
   return (
     <div>
       <h2>Phonebook</h2>
