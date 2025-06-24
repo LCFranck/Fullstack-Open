@@ -30,7 +30,7 @@ const App = () => {
     }, [])
 
     useEffect(() => {
-      setCountry('')
+    
       if (countriesToShow.length === 1) {
         setCountry(countriesToShow[0]); 
       }
@@ -69,17 +69,20 @@ const App = () => {
   }
   
 
-
+const onSelect = (selectedCountry) => {
+    setCountry(selectedCountry)
+    setNewFilter(selectedCountry)
+  }
   const onSearch = (event) => {
     event.preventDefault()
-    setCountry(newFilter)
+    setCountry(filter)
   }
 
   return (
     <div>
       <form onSubmit={onSearch}>
         Find coutries: <input value={newFilter} onChange={handleFilter} />
-        <button type="submit">search</button>
+        
       </form>
       
    
@@ -89,6 +92,7 @@ const App = () => {
         capital={capital}
         area={area}
         flag={flag}
+        onSearch={onSelect}
       />
     </div>
 

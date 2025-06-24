@@ -5,7 +5,7 @@ const Content = (props) => {
         console.log("my country kakka", props.country)
 
 
-    if (props.country){
+    if (props.list.length === 1){
         console.log("heej")
         return (
             <div>     
@@ -38,7 +38,12 @@ const Content = (props) => {
             <div> 
                 <ul>
                     {(props.list).map((country) => (
-                    <li key={country}>{country}</li>
+                    <li 
+                        key={country}>{country}
+                        <button onClick={() => props.onSearch(country)}>select</button>
+
+                    </li>
+                    
                     ))}
                 </ul>
             </div>
