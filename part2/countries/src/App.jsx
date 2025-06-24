@@ -4,7 +4,6 @@ import Content from './components/Content'
 
 
 const App = () => {
-  const [value, setValue] = useState('')
   const [country, setCountry] = useState('')
   const [lan, setlan] = useState({})
   const [capital, setCapital] = useState('')
@@ -30,8 +29,13 @@ const App = () => {
     console.log(countriesToShow)
     }, [])
 
-
-  useEffect(() => {
+    useEffect(() => {
+      setCountry('')
+      if (countriesToShow.length === 1) {
+        setCountry(countriesToShow[0]); 
+      }
+    }, [countriesToShow]);
+      useEffect(() => {
  
     if (country) {
       console.log('wowwiee a country!', country)
@@ -80,11 +84,12 @@ const App = () => {
       
    
       <Content country ={country} 
-      list = {countriesToShow} 
-      lan = {lan}
-      capital={capital}
-      area={area}
-      flag={flag}/>
+        list = {countriesToShow} 
+        lan = {lan}
+        capital={capital}
+        area={area}
+        flag={flag}
+      />
     </div>
 
   )

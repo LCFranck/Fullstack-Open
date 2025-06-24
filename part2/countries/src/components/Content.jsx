@@ -26,6 +26,13 @@ const Content = (props) => {
  
             </div>
         )}
+    else if (props.list.length > 10)
+        return (
+    <div> 
+                <ul>too many matches, specify another filter</ul>
+    </div>
+
+    )
     else 
         return (
             <div> 
