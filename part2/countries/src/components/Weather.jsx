@@ -7,9 +7,9 @@ const Weather = (props) => {
         
             <div> 
                 <h1> Weather in {props.city} </h1>
-                <p>Temp is {props.temp}</p>
-                <p>Wind is {props.wind} m/s</p>
+                <p>Temp is {props.temp} celcius</p>
                 <img src={props.icon} alt="weather icon" />
+                <p>Wind is {props.wind} m/s</p>
 
 
             </div>

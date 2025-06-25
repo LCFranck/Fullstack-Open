@@ -156,10 +156,7 @@ const onSelect = (selectedCountry) => {
     <div>
       <form onSubmit={onSearch}>
         Find coutries: <input value={newFilter} onChange={handleFilter} />
-        
       </form>
-      
-   
       <Content country ={country} 
         list = {countriesToShow} 
         lan = {lan}
@@ -168,18 +165,16 @@ const onSelect = (selectedCountry) => {
         flag={flag}
         onSearch={onSelect}
       />
-
       <Weather 
-      list = {countriesToShow} 
-      city = {capital}
-      temp = {temp}
-      wind = {wind}
-      icon = {icon}
+        list = {countriesToShow} 
+        city = {capital}
+        temp = {temp}
+        wind = {wind}
+        icon = {icon}
       />
     </div>
 
 
   )
 }
-
 export default App
