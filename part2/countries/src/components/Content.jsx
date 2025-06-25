@@ -1,12 +1,9 @@
 
 
 const Content = (props) => {
-    console.log("my list kakka", props.list)
-        console.log("my country kakka", props.country)
 
 
     if (props.list.length === 1){
-        console.log("heej")
         return (
             <div>     
                 <h1> {props.country} </h1>
@@ -22,7 +19,7 @@ const Content = (props) => {
                     <li key={language}>{language}</li>
                     ))}
                 </ul>
-                <img src={props.flag} alt="flag of" />
+                <img src={props.flag} alt="flag" />
  
             </div>
         )}

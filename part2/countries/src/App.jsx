@@ -25,24 +25,21 @@ const App = () => {
   const [lat, setLat] =  useState('')
   const [long, setLong] =  useState('')
   const [temp, setTemp] =  useState('')
-    const [wind,setWind] =  useState('')
+  const [wind,setWind] =  useState('')
 
 
-  const [icon, setIcon] =  useState('')
+  const [icon, setIcon] =  useState([])
 
 
-
-
-  const getWeather = (country)=> {
-
+  const getCoordinates = (country)=> {
     //getting coordinates
-   if (country) {
-      console.log('getting coordinates for', country)
+   if (capital) {
+      console.log('getting coordinates for', capital)
       axios
-        .get(`http://api.openweathermap.org/geo/1.0/direct?q=${capital}&limit=1&appid=${api_key}`)
+        .get(`http://api.openweathermap.org/geo/1.0/direct?q=${capital}&appid=${api_key}`)
         .then(response => {
-          setLong(response.data.lon)
-          setLat(response.data.lat)
+          setLong(response.data[0].lon)
+          setLat(response.data[0].lat)
 
         }).catch(error => {
           console.log("coordinate error")
@@ -51,14 +48,20 @@ const App = () => {
         })
     }
 
+
+  }
+
+
+  const getWeather = (country)=> {
       if (country) {
       console.log('getting weather for', country)
       axios
         .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${api_key}`)
         .then(response => {
+          console.log(response.data);
           setTemp(response.data.main.temp)
           setWind(response.data.wind.speed)
-          setIcon(response.data.weather.icon)
+          setIcon(`https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`)
 
         }).catch(error => {
           console.log("weather error")
@@ -69,15 +72,25 @@ const App = () => {
 
   }
 
+  useEffect(() => {
+    console.log('coordinates are:', long, lat)
+
+    if (long, lat) {
+      getWeather(lat, long);
+    }
+  }, [lat, long]);
 
   useEffect(() => {
     if (capital) {
-      getWeather(capital);
+      getCoordinates(capital);
     }
   }, [capital]);
 
 
   useEffect(() => {
+    console.log("API key: ", api_key)
+    console.log(import.meta.env.VITE_SOME_KEY);
+
 
     console.log('effect run, country is now', country)
     axios.get('https://studies.cs.helsinki.fi/restcountries/api/all')
@@ -156,8 +169,15 @@ const onSelect = (selectedCountry) => {
         onSearch={onSelect}
       />
 
-      <Weather city = {capital}/>
+      <Weather 
+      list = {countriesToShow} 
+      city = {capital}
+      temp = {temp}
+      wind = {wind}
+      icon = {icon}
+      />
     </div>
+
 
   )
 }
