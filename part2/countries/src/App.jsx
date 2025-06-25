@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Content from './components/Content'
+import Weather from './components/Weather'
+
+
+
 
 
 const App = () => {
@@ -11,9 +15,67 @@ const App = () => {
   const [flag, setFlag] =  useState(null)
   const [newFilter, setNewFilter] = useState('')
   const [countryList, setCountryList] = useState([])
-
-
   const countriesToShow = countryList.filter(country => country.toLowerCase().includes(newFilter.toLowerCase()))
+
+
+  //weather part constants
+  const api_key = import.meta.env.VITE_SOME_KEY
+// variable api_key now has the value set in startup
+
+  const [lat, setLat] =  useState('')
+  const [long, setLong] =  useState('')
+  const [temp, setTemp] =  useState('')
+    const [wind,setWind] =  useState('')
+
+
+  const [icon, setIcon] =  useState('')
+
+
+
+
+  const getWeather = (country)=> {
+
+    //getting coordinates
+   if (country) {
+      console.log('getting coordinates for', country)
+      axios
+        .get(`http://api.openweathermap.org/geo/1.0/direct?q=${capital}&limit=1&appid=${api_key}`)
+        .then(response => {
+          setLong(response.data.lon)
+          setLat(response.data.lat)
+
+        }).catch(error => {
+          console.log("coordinate error")
+          alert(`error getting coordinates`)
+    
+        })
+    }
+
+      if (country) {
+      console.log('getting weather for', country)
+      axios
+        .get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&units=metric&appid=${api_key}`)
+        .then(response => {
+          setTemp(response.data.main.temp)
+          setWind(response.data.wind.speed)
+          setIcon(response.data.weather.icon)
+
+        }).catch(error => {
+          console.log("weather error")
+          alert(`error getting weather`)
+    
+        })
+    }
+
+  }
+
+
+  useEffect(() => {
+    if (capital) {
+      getWeather(capital);
+    }
+  }, [capital]);
+
 
   useEffect(() => {
 
@@ -93,6 +155,8 @@ const onSelect = (selectedCountry) => {
         flag={flag}
         onSearch={onSelect}
       />
+
+      <Weather city = {capital}/>
     </div>
 
   )
