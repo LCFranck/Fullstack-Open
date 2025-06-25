@@ -113,7 +113,7 @@ const App = () => {
       useEffect(() => {
  
     if (country) {
-      console.log('wowwiee a country!', country)
+      console.log('country:', country)
       axios
         .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country}`)
         .then(response => {
