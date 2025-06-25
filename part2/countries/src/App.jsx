@@ -15,13 +15,11 @@ const App = () => {
   const [flag, setFlag] =  useState(null)
   const [newFilter, setNewFilter] = useState('')
   const [countryList, setCountryList] = useState([])
+
   const countriesToShow = countryList.filter(country => country.toLowerCase().includes(newFilter.toLowerCase()))
 
-
-  //weather part constants
+//related to weather
   const api_key = import.meta.env.VITE_SOME_KEY
-// variable api_key now has the value set in startup
-
   const [lat, setLat] =  useState('')
   const [long, setLong] =  useState('')
   const [temp, setTemp] =  useState('')
@@ -104,14 +102,17 @@ const App = () => {
     console.log(countriesToShow)
     }, [])
 
-    useEffect(() => {
     
-      if (countriesToShow.length === 1) {
-        setCountry(countriesToShow[0]); 
-      }
-    }, [countriesToShow]);
-      useEffect(() => {
- 
+  useEffect(() => {
+  
+    if (countriesToShow.length === 1) {
+      setCountry(countriesToShow[0]); 
+    }
+  }, [countriesToShow]);
+
+
+
+  useEffect(() => {
     if (country) {
       console.log('country:', country)
       axios
@@ -143,10 +144,10 @@ const App = () => {
   }
   
 
-const onSelect = (selectedCountry) => {
-    setCountry(selectedCountry)
-    setNewFilter(selectedCountry)
-  }
+  const onSelect = (selectedCountry) => {
+      setCountry(selectedCountry)
+      setNewFilter(selectedCountry)
+    }
   const onSearch = (event) => {
     event.preventDefault()
     setCountry(filter)
