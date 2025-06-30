@@ -4,11 +4,38 @@ const express = require('express')
 const app = express()
 const http = require('http')
 const morgan = require('morgan')
-const cors = require('cors')
+//const cors = require('cors')
 
 
 
-let persons = [
+//mongoose code 
+const mongoose = require('mongoose')
+
+if (process.argv.length < 3) {
+  console.log('give password as argument')
+  process.exit(1)
+}
+
+const password = process.argv[2]
+
+const url = `mongodb+srv://cfranck:${password}@cluster0.lqis7nc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`
+
+mongoose.set('strictQuery',false)
+
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+    name: String, 
+    number: String
+    
+})
+
+
+
+const Person = mongoose.model('Person', personSchema)
+
+
+/* let persons = [
     { 
       "id": "1",
       "name": "Arto Hellas", 
@@ -29,7 +56,7 @@ let persons = [
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
     }
-]
+] */
 
 app.use(express.json())
 app.use(morgan('tiny'))
@@ -57,6 +84,13 @@ app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+app.get('/api/persons', (request, response) => {
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
+})
+
+
 
 app.get('/api/info', (request, response) => {
   const time = new Date()
@@ -78,6 +112,8 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(404).end()
   }
 })
+
+
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id
