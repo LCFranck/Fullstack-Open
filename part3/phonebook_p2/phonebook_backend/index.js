@@ -37,28 +37,31 @@ app.get('/api/persons', (request, response) => {
 
 
 
+
+
+
 app.get('/api/info', (request, response) => {
   const time = new Date()
   Person.find({}).then(persons => {
-    const length = persons.length})
+    const length = persons.length
 
   const html = `
     <p> Phonebook has info for ${length} people </p>
     <p> ${time} </p>`
-    response.send(html)
+    response.send(html)})
 })
 
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
   Person.find({}).then(persons => {
-  const person = persons.find((person) => person.id === id)})
+  const person = persons.find((person) => person.id === id)
 
   if (person) {
     response.json(person)
   } else {
     response.status(404).end()
   }
-})
+})})
 
 
 
@@ -76,11 +79,8 @@ const generateId = () => {
 }
 
 app.post('/api/persons', (request, response) => {
-  Person.find({}).then(persons => {
+  
     const body = request.body
-
-    
-
     if (!body.name) {
       return response.status(400).json({
         error: 'name missing',
@@ -93,23 +93,22 @@ app.post('/api/persons', (request, response) => {
       })
     }
 
-    if(persons.find(p => p.name === body.name)){
-      return response.status(400).json({
-        error: 'name must be unique',
-      })
-    }
-
-
-    const person = {
-      name: body.name,
+  const person = new Person({
+      name: body.name, 
       number: body.number,
-      id: generateId(),
-    }
+  })
 
-    persons = persons.concat(person)
-
-    response.json(person)
-  })})
+  console.log(body.name)
+  if (person.name && person.number){
+      person.save().then(result => {
+      console.log('person saved!')
+      response.status(201).json(result)
+      
+      })
+       
+  }
+  
+  })
 
 
 
