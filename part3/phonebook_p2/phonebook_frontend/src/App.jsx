@@ -70,6 +70,10 @@ const App = () => {
       setNotification(` the person '${personObject.name}' was added`)        
           setTimeout(() => {setNotification(null)}, 5000)
 
+    }).catch(error => {
+      setNotifType('error')
+      setNotification(error.response.data.error)  
+      console.log(error.response.data.error)
     })
   }
 

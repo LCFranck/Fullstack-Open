@@ -21,12 +21,12 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model('Person', personSchema)
 
-/* Person.find({}).then(result => {
+Person.find({}).then(result => {
   result.forEach(person => {
     console.log(person)
   })
   mongoose.connection.close()
-}) */
+}) 
 
  const person = new Person({
     name: process.argv[3], 
