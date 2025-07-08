@@ -2,7 +2,8 @@ const Person = require('./models/person')
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const http = require('http')
+/* const http = require('http')
+ */
 const morgan = require('morgan')
 //const cors = require('cors')
 
@@ -36,7 +37,7 @@ app.get('/api/info', (request, response) => {
   Person.find({}).then(persons => {
     const length = persons.length
 
-  const html = `
+    const html = `
     <p> Phonebook has info for ${length} people </p>
     <p> ${time} </p>`
     response.send(html)})
@@ -66,10 +67,10 @@ app.get('/api/persons/:id', (request, response, next) => {
     })
     .catch(error => next(error))
     //.catch(error => {
-     // console.log(error)
-     // response.status(400).send({ error: 'malformatted id' })
-     // response.status(500).end()
-   // })
+  // console.log(error)
+  // response.status(400).send({ error: 'malformatted id' })
+  // response.status(500).end()
+  // })
 })
 
 
@@ -85,12 +86,12 @@ app.get('/api/persons/:id', (request, response, next) => {
 
   response.status(204).end()})
 
-  
+
 }) */
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -122,45 +123,45 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 app.post('/api/persons', (request, response, next) => {
 
-  console.log("started posting")
-  
+  console.log('started posting')
+
   const body = request.body
 
   /* if (!body.name) {
     return response.status(400).json({ error: 'name missing' })
   } */
-  
-    if (!body.name) {
-      return response.status(400).json({
-        error: 'name missing',
-      })
-    }
 
-    else if (!body.number) {
-      return response.status(400).json({
-        error: 'number missing',
-      })
-    }
+  if (!body.name) {
+    return response.status(400).json({
+      error: 'name missing',
+    })
+  }
+
+  else if (!body.number) {
+    return response.status(400).json({
+      error: 'number missing',
+    })
+  }
 
   const person = new Person({
-      name: body.name, 
-      number: body.number,
+    name: body.name,
+    number: body.number,
   })
 
   console.log(body.name)
   if (person.name && person.number){
-      person.save().then(result => {
+    person.save().then(result => {
       console.log('person saved!')
       response.status(201).json(result)
-      })
+    })
       .catch(error => next(error))
 
-       
-  }
-  
-  })
 
-  const unknownEndpoint = (request, response) => {
+  }
+
+})
+
+const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 

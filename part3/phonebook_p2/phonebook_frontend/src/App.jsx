@@ -87,7 +87,7 @@ const App = () => {
       setNotification(` the person '${person.name}' was removed`)        
       setTimeout(() => {setNotification(null)}, 5000)
     })
-      .catch(error => {   
+      .catch(() => {   
       setNotifType('error')   
       setNotification(` the person '${person.name}' was already removed`)        
       setTimeout(() => {setNotification(null)}, 5000)  
