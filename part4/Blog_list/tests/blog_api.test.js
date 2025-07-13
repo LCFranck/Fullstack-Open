@@ -57,6 +57,40 @@ test('a new blog with unspecified likes, will have 0 likes ', async () => {
     assert(likes.includes(0))
 })
 
+test('new blog with unspecified title', async () => {
+  const newBlog = {
+    author: "mysterious person",
+    url: "avasfafw.com",
+    likes: 3000,
+  }
+
+    await api.post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+
+test('new blog with unspecified url', async () => {
+  const newBlog = {
+    title: "avasfafw",
+    author: "mysterious person",
+    likes: 3000,
+  }
+
+    await api.post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+
+  const blogsAtEnd = await helper.blogsInDb()
+
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+
 
 
 test('all blogs are returned', async () => {
