@@ -60,7 +60,7 @@ describe('total likes', () => {
     }
   ]
   
-  test('this is stooopid', () => {
+  test('testing mostlikes', () => {
     const result = listHelper.mostLikes(listWithManyBlog)
     assert.deepStrictEqual(result, listWithManyBlog[1])
   })
