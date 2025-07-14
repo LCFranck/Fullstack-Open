@@ -1,7 +1,9 @@
-PUT http://localhost:3001/api/notes/67cadab408282ee8ed1e61d0
+PUT http://localhost:3001/api/blogs/68751bb40aef74a66a6d776f
 Content-Type: application/json
 
 {
-  "content": "HTML is easy",
-  "important": true
+    "title": "Bobedy badebady",
+    "author": "Jobeby badoby",
+    "url": "joejoejoejoe.com",
+    "likes": 12360
 }

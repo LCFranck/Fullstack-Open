@@ -13,6 +13,13 @@ const initialBlogs = [
     url: "woff.ax",
     likes: 5,
   },
+  {
+    title: "Goose activities",
+    author: "Joe Gas",
+    url: "uhhhhhhhhhhh.com",
+    likes: 500000000
+  
+}
 ]
 
 const nonExistingId = async () => {

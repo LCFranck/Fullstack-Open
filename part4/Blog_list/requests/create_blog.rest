@@ -2,9 +2,10 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "author": "Joe Gas",
-  "url": "uhhhhhhhhhhh.com",
-  "likes": 500000000
+  "title": "Bobedy badebady",
+  "author": "Jobeby badoby",
+  "url": "joejoejoejoe.com",
+  "likes": 12359
   
 }
 
