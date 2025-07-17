@@ -2,10 +2,10 @@ POST http://localhost:3001/api/blogs
 Content-Type: application/json
 
 {
-  "title": "midnight sit",
-  "author": "Rufelius Davidson",
-  "url": "rufeliies.com",
-  "likes": 5132,
+  "title": "hus hus hus",
+  "author": "Anna Manna",
+  "url": "mannaanna.com",
+  "likes": 34,
   "user": "68765f9a8d035a03be3e2d66"
   
 }
