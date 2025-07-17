@@ -1,6 +1,5 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlaGUiLCJpZCI6IjY4NzhlMDM2N2IwMWMyZDk3ZGQzOWY1MiIsImlhdCI6MTc1Mjc1NDEyNCwiZXhwIjoxNzUyNzU3NzI0fQ.1PTJf2mFLBf0QAdjD-vguoSIt1PVbYP4Us4V5HNx4tk
 
 {
   "title": "hus hus hus",
