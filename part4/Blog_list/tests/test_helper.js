@@ -1,22 +1,5 @@
 const Blog = require('../models/blog')
-
-
-const initialUser = [
-
-{
-    username: "tehe",
-    name: "caca",
-    password: "tehe"
-}
-]
-
-const logIn = [
-  {
-  username: "tehe",
-  password: "tehe"
-  }
-
-]
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -40,37 +23,17 @@ const initialBlogs = [
 }
 ]
 
-const getTokenForTestUser = async (api) => {
-  await User.deleteMany({})
-
-  const passwordHash = await bcrypt.hash(initialUser.password, 10)
-  const user = new User({
-    username: initialUser.username,
-    name: initialUser.name,
-    passwordHash
-  })
-  await user.save()
-
-  // Now log in via the API to get token
-  const response = await api
-    .post('/api/login')
-    .send({
-      username: initialUser.username,
-      password: initialUser.password
-    })
-
-  return {
-    token: response.body.token,
-    userId: user._id.toString()
-  }
-}
-
 const nonExistingId = async () => {
   const blog = new Blog({ title: 'this will be gone' })
   await blog.save()
   await blog.deleteOne()
 
   return blog._id.toString()
+}
+
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(u => u.toJSON())
 }
 
 const blogsInDb = async () => {
@@ -80,8 +43,7 @@ const blogsInDb = async () => {
 
 module.exports = {
   initialBlogs,
-  initialUser,
   nonExistingId,
   blogsInDb,
-  getTokenForTestUser,
+  usersInDb
 }
