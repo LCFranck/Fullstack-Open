@@ -57,11 +57,33 @@ describe('total likes', () => {
       url: 'https://homepages.cwi.nl/~storm/teaching/reader/facts.pdf',
       likes: 7,
       __v: 0
+    },{
+      _id: 'aaqqqqqqqqqqqqqqqq2',
+      title: 'Frog facts2',
+      author: 'Man Upp',
+      url: 'https://homepages.cwi.nl/~storm/teaching/reader/facts2.pdf',
+      likes: 3,
+      __v: 0
     }
   ]
   
-  test('testing mostlikes', () => {
-    const result = listHelper.mostLikes(listWithManyBlog)
+  test('testing favoriteBlog ', () => {
+    const result = listHelper.favoriteBlog (listWithManyBlog)
     assert.deepStrictEqual(result, listWithManyBlog[1])
+  })
+
+  test('testing mostBlogs', () => {
+    const result = listHelper.mostBlogs(listWithManyBlog)
+    assert.deepStrictEqual(result.author, listWithManyBlog[2].author)
+    assert.strictEqual(result.blogs, 2)
+
+  })
+
+
+  test('testing mostLikes', () => {
+    const result = listHelper.mostLikes(listWithManyBlog)
+    assert.deepStrictEqual(result.author, listWithManyBlog[1].author)
+    assert.strictEqual(result.likes, 50000)
+
   })
 })
