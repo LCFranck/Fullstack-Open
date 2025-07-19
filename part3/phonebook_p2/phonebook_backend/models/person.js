@@ -19,8 +19,10 @@ mongoose.connect(url)
 
 
 const personSchema = new mongoose.Schema({
-  name: { type: String,    minLength: 3,    required: true  },
-  number: { type: String,     validate: {
+  name: { type: String,
+    minLength: 3,
+    required: true  },
+  number: { type: String, validate: {
     validator: (num) => {
       const splitArray = num.split('-')
       let regex = /^\d+$/

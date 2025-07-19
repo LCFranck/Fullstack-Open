@@ -13,7 +13,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const names = persons.map(person => (person.name))
   const [newFilter, setNewFilter] = useState('')
-  const [notifMessage, setNotification] = useState(null) //nytt bör ändras
+  const [notifMessage, setNotification] = useState(null) 
   const [notifType, setNotifType] = useState('success') 
   const personsToShow = persons.filter(person => person?.name?.toLowerCase().includes(newFilter.toLowerCase())
 )

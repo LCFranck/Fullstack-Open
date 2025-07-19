@@ -2,15 +2,12 @@ const Person = require('./models/person')
 require('dotenv').config()
 const express = require('express')
 const app = express()
-/* const http = require('http')
- */
+
 const morgan = require('morgan')
-//const cors = require('cors')
 
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(morgan('tiny'))
-//app.use(requestLogger)
 
 
 morgan.token('body', (req) => {
@@ -43,17 +40,7 @@ app.get('/api/info', (request, response) => {
     response.send(html)})
 })
 
-/* app.get('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  Person.find({}).then(persons => {
-  const person = persons.find((person) => person.id === id)
 
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
-  })}) */
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
@@ -66,28 +53,9 @@ app.get('/api/persons/:id', (request, response, next) => {
       }
     })
     .catch(error => next(error))
-    //.catch(error => {
-  // console.log(error)
-  // response.status(400).send({ error: 'malformatted id' })
-  // response.status(500).end()
-  // })
+
 })
 
-
-
-
-
-
-
-/* app.delete('/api/persons/:id', (request, response) => {
-  const id = request.params.id
-  Person.find({}).then(persons => {
-  persons = persons.filter((person) => person.id !== id)
-
-  response.status(204).end()})
-
-
-}) */
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
@@ -116,10 +84,6 @@ app.put('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-/* const generateId = () => {
-  const randomID = Math.floor(Math.random() * 1000);
-  return String(randomID)
-} */
 
 app.post('/api/persons', (request, response, next) => {
 
@@ -127,9 +91,6 @@ app.post('/api/persons', (request, response, next) => {
 
   const body = request.body
 
-  /* if (!body.name) {
-    return response.status(400).json({ error: 'name missing' })
-  } */
 
   if (!body.name) {
     return response.status(400).json({
