@@ -11,8 +11,16 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+
+
+
+
   useEffect(() => {
     blogService.getAll().then(blogs =>
+      //console.log('Fetched blogs:', blogs),
       setBlogs( blogs )
     )  
   }, [])
@@ -25,10 +33,18 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
-/* 
-  const handleBlogChange = (event) => {
-    setNewBlog(event.target.value)
-  } */
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
+  } 
+
+    const handleAuthorChange = (event) => {
+    setAuthor(event.target.value)
+  } 
+
+    const handleUrlChange = (event) => {
+    setUrl(event.target.value)
+  } 
   const handleLogout = async (event) => {
     event.preventDefault()
 
@@ -61,6 +77,23 @@ const App = () => {
       }, 5000)
     }
   }
+  const addBlog = (event) => {
+    event.preventDefault()
+    const BlogObject =   {
+    title: title,
+    author: author,
+    url: url,
+  }
+  
+    blogService
+      .create(BlogObject)
+        .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+        setTitle('')
+        setAuthor('')
+        setUrl('')
+      })
+  }
 
   const loginForm = () => (
     <form onSubmit={handleLogin}>
@@ -86,14 +119,41 @@ const App = () => {
     </form>      
   )
   
+  
   const blogForm = () => (
-    <div>
+    <div> 
       <h2>blogs</h2>
-      {blogs.map(blog =>
+   
+      <form onSubmit={addBlog}>
+        <div>
+        title
+          <input
+          value={title}
+          onChange={handleTitleChange}
+         />
+        </div>
+      <div>
+        author
+          <input
+          value={author}
+          onChange={handleAuthorChange}
+         />
+        </div>
+        <div>
+        url
+          <input
+          value={url}
+          onChange={handleUrlChange}
+         />
+        </div>
+      <button type="submit">save</button>
+    </form> 
+    {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
-      )}
-    </div>  
+      )} 
+    </div>
   )
+  
 
 
  
