@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
   
     const [showDetails, setShowDetails] = useState(false)
 
@@ -26,9 +26,11 @@ const Blog = ({ blog }) => {
     {showDetails && <div>
       <div>Title: {blog.title}</div>
       <div>Author: {blog.author}</div>
-      <div>Likes: {blog.likes}</div>
+      <div>Likes: {blog.likes}
+        <button onClick={() => handleLike(blog.id)}>like</button>
+      </div>
       <div>URL: {blog.url}</div>
-      <button onClick={handleShow}>show</button>
+      <button onClick={handleShow}>hide</button>
     </div> } 
    </div> 
   

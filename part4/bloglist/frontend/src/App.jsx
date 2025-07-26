@@ -40,11 +40,25 @@ const App = () => {
   }, [])
 
 
-  const handleLike = async (event) => {
-
-
+  const handleLike = id => {
+      const blog = blogs.find(n => n.id === id)
+      const changedBlog = { ...blog, likes: blog.likes + 1 }
     
-  }
+      blogService
+        .update(id, changedBlog)
+          .then(returnedBlog => {
+          setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+        })
+        .catch(error => {
+          setNotifType('error')
+          setNotification(` something went wrong!`)        
+          setTimeout(() => {setNotification(null)}, 5000)
+          
+        })
+    }
+
+
+  
 
   const handleLogout = async (event) => {
     event.preventDefault()
@@ -156,7 +170,7 @@ return (
       } 
       <h2>Blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )} 
     </div>
   )
