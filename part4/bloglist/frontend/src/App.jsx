@@ -40,6 +40,12 @@ const App = () => {
   }, [])
 
 
+  const handleLike = async (event) => {
+
+
+    
+  }
+
   const handleLogout = async (event) => {
     event.preventDefault()
 
@@ -122,14 +128,6 @@ const App = () => {
     const showWhenVisible = { display: formVisible ? '' : 'none' }
 
     
-/*   addBlog,
-  handleTitleChange,
-  handleAuthorChange,
-  handleUrlChange,
-  handleHide,
-  title,
-  author,
-  url */
 
     return (
       <div>
@@ -137,11 +135,7 @@ const App = () => {
           <button onClick={() => setFormVisible(true)}>add blog</button>
         </div>
         <div style={showWhenVisible}>
-          <BlogForm
-            addBlog={addBlog}
-
-
-          />
+          <BlogForm addBlog={addBlog}/>
           <button onClick={() => setFormVisible(false)}>cancel</button>
         </div>
       </div>

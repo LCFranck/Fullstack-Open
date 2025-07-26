@@ -8,9 +8,9 @@ const BlogForm = ({ addBlog }) => {
   const blogSubmit = (event) => {
     event.preventDefault()
     addBlog({
-      title,
-     author,
-       url
+      title: title,
+     author: author,
+      url:  url
     })
 
     setTitle('')
