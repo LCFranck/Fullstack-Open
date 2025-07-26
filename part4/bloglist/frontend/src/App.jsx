@@ -3,6 +3,8 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+
 
 
 
@@ -12,12 +14,11 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   const [notifMessage, setNotification] = useState(null) 
   const [notifType, setNotifType] = useState('success') 
+
+  const [formVisible, setFormVisible] = useState(false)
 
 
 
@@ -38,17 +39,7 @@ const App = () => {
     }
   }, [])
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value)
-  } 
 
-    const handleAuthorChange = (event) => {
-    setAuthor(event.target.value)
-  } 
-
-    const handleUrlChange = (event) => {
-    setUrl(event.target.value)
-  } 
   const handleLogout = async (event) => {
     event.preventDefault()
 
@@ -81,21 +72,18 @@ const App = () => {
 
     }
   }
-  const addBlog = (event) => {
-    event.preventDefault()
-    const BlogObject =   {
+  const addBlog = (blogObject) => {
+/*     const BlogObject =   {
     title: title,
     author: author,
     url: url,
-  }
+  } */
   
     blogService
-      .create(BlogObject)
+      .create(blogObject)
         .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
-        setTitle('')
-        setAuthor('')
-        setUrl('')
+
       })
 
       setNotifType('success'),
@@ -126,45 +114,44 @@ const App = () => {
       <button type="submit">login</button>
     </form>      
   )
+
   
-  
-  const blogForm = () => (
-    <div> 
-      <h2>blogs</h2>
-      <form onSubmit={addBlog}>
-        <div>
-        title
-          <input
-          value={title}
-          onChange={handleTitleChange}
-         />
-        </div>
+
+  const blogForm = () => {
+    const hideWhenVisible = { display: formVisible ? 'none' : '' }
+    const showWhenVisible = { display: formVisible ? '' : 'none' }
+
+    
+/*   addBlog,
+  handleTitleChange,
+  handleAuthorChange,
+  handleUrlChange,
+  handleHide,
+  title,
+  author,
+  url */
+
+    return (
       <div>
-        author
-          <input
-          value={author}
-          onChange={handleAuthorChange}
-         />
+        <div style={hideWhenVisible}>
+          <button onClick={() => setFormVisible(true)}>add blog</button>
         </div>
-        <div>
-        url
-          <input
-          value={url}
-          onChange={handleUrlChange}
-         />
+        <div style={showWhenVisible}>
+          <BlogForm
+            addBlog={addBlog}
+
+
+          />
+          <button onClick={() => setFormVisible(false)}>cancel</button>
         </div>
-      <button type="submit">save</button>
-    </form> 
-    {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )} 
-    </div>
-  )
+      </div>
+    )
+  }
   
 
 return (
     <div>
-      <h1>Blogs</h1>
+      <h1>Blogs!</h1>
       <Notification message={notifMessage} type={notifType}/> 
       {!user && loginForm()}
       {user && <div>
@@ -172,8 +159,11 @@ return (
         <button onClick={handleLogout}>Logout </button>
         {blogForm()}
       </div>
-    } 
-
+      } 
+      <h2>Blogs</h2>
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
+      )} 
     </div>
   )
 }
