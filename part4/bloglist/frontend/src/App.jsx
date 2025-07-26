@@ -5,9 +5,6 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 
-
-
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -19,9 +16,6 @@ const App = () => {
   const [notifType, setNotifType] = useState('success') 
 
   const [formVisible, setFormVisible] = useState(false)
-
-
-
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -57,9 +51,6 @@ const App = () => {
         })
     }
 
-
-  
-
   const handleLogout = async (event) => {
     event.preventDefault()
 
@@ -93,11 +84,6 @@ const App = () => {
     }
   }
   const addBlog = (blogObject) => {
-/*     const BlogObject =   {
-    title: title,
-    author: author,
-    url: url,
-  } */
   
     blogService
       .create(blogObject)
@@ -141,8 +127,6 @@ const App = () => {
     const hideWhenVisible = { display: formVisible ? 'none' : '' }
     const showWhenVisible = { display: formVisible ? '' : 'none' }
 
-    
-
     return (
       <div>
         <div style={hideWhenVisible}>
@@ -156,7 +140,6 @@ const App = () => {
     )
   }
   
-
 return (
     <div>
       <h1>Blogs!</h1>
@@ -175,6 +158,5 @@ return (
     </div>
   )
 }
-
 
 export default App
