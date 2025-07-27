@@ -11,6 +11,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
+  const [sortedBlogs, setSortedBlogs] = useState([])
+
+
 
   const [notifMessage, setNotification] = useState(null) 
   const [notifType, setNotifType] = useState('success') 
@@ -19,10 +22,14 @@ const App = () => {
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      //console.log('Fetched blogs:', blogs),
-      setBlogs( blogs )
+      setBlogs( blogs ),
     )  
   }, [])
+
+  useEffect(() => {
+    const sorted = [...blogs].sort(compareNumbers);
+    setSortedBlogs(sorted);
+}, [blogs]);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -121,6 +128,11 @@ const App = () => {
     </form>      
   )
 
+const compareNumbers= (a, b) => {
+  return b.likes - a.likes
+}
+
+
   
 
   const blogForm = () => {
@@ -152,11 +164,13 @@ return (
       </div>
       } 
       <h2>Blogs</h2>
-      {blogs.map(blog =>
+      {sortedBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )} 
     </div>
   )
 }
+
+
 
 export default App
