@@ -1,7 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
+
+import PropTypes from 'prop-types'
+
 
 const Blog = ({ blog, handleLike, deleteBlog }) => {
-  
+
     const [showDetails, setShowDetails] = useState(false)
 
     const blogStyle = {
@@ -11,14 +14,14 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  
 
-  const handleShow = async (event) => {
-    setShowDetails(!showDetails) 
+
+  const handleShow = async () => {
+    setShowDetails(!showDetails)
   }
 
-  const handleDelete = async (event) => {
-    deleteBlog(blog) 
+  const handleDelete = async () => {
+    deleteBlog(blog)
   }
 
   return(
@@ -26,7 +29,7 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
      {!showDetails && <div>
       {blog.title} {blog.author}
       <button onClick={handleShow}>show</button>
-   </div> } 
+   </div> }
     {showDetails && <div>
       <div>Title: {blog.title}</div>
       <button onClick={handleShow}>hide</button>
@@ -36,9 +39,15 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
       </div>
       <div>URL: {blog.url}</div>
       <button onClick={handleDelete}>delete</button>
-    </div> } 
-   </div> 
-  
+    </div> }
+   </div>
+
 )
+}
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  deleteBlog: PropTypes.func.isRequired
+
 }
 export default Blog

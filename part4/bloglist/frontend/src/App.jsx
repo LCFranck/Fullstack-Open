@@ -15,15 +15,15 @@ const App = () => {
 
 
 
-  const [notifMessage, setNotification] = useState(null) 
-  const [notifType, setNotifType] = useState('success') 
+  const [notifMessage, setNotification] = useState(null)
+  const [notifType, setNotifType] = useState('success')
 
   const [formVisible, setFormVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs ),
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -41,36 +41,36 @@ const App = () => {
   }, [])
 
   const removeBlog = (blogObject) => {
-    
+
         console.log("deleted!!")
-        
+
         blogService.remove(blogObject.id).then(() => {
           setNotifType('success')
           setBlogs(blogs.filter(newBlog => newBlog.id !== blogObject.id))
-          setNotification(` the blog '${blogObject.title}' was removed`)        
+          setNotification(` the blog '${blogObject.title}' was removed`)
           setTimeout(() => {setNotification(null)}, 5000)
         })
-          .catch(() => {   
-          setNotifType('error')   
-          setNotification(` the blog '${blogObject.title}' was note removed, you do not have the rights or it was already removed.`)        
-          setTimeout(() => {setNotification(null)}, 5000)  
+          .catch(() => {
+          setNotifType('error')
+          setNotification(` the blog '${blogObject.title}' was note removed, you do not have the rights or it was already removed.`)
+          setTimeout(() => {setNotification(null)}, 5000)
         })
 
   }
   const handleLike = id => {
       const blog = blogs.find(n => n.id === id)
       const changedBlog = { ...blog, likes: blog.likes + 1 }
-    
+
       blogService
         .update(id, changedBlog)
           .then(returnedBlog => {
           setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
         })
-        .catch(error => {
+        .catch(() => {
           setNotifType('error')
-          setNotification(` something went wrong!`)        
+          setNotification(` something went wrong!`)
           setTimeout(() => {setNotification(null)}, 5000)
-          
+
         })
     }
 
@@ -93,7 +93,7 @@ const App = () => {
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
@@ -101,13 +101,13 @@ const App = () => {
     } catch (exception) {
       //setErrorMessage('wrong credentials')
       setNotifType('error')
-      setNotification(` Wrong username or password!`)        
+      setNotification(` Wrong username or password!`)
       setTimeout(() => {setNotification(null)}, 5000)
 
     }
   }
   const addBlog = (blogObject) => {
-  
+
     blogService
       .create(blogObject)
         .then(returnedBlog => {
@@ -116,7 +116,7 @@ const App = () => {
       })
 
       setNotifType('success'),
-        setNotification(`blog was added!`),        
+        setNotification(`blog was added!`),
         setTimeout(() => {setNotification(null)}, 5000)
   }
 
@@ -141,7 +141,7 @@ const App = () => {
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form>
   )
 
 const compareNumbers= (a, b) => {
@@ -149,7 +149,7 @@ const compareNumbers= (a, b) => {
 }
 
 
-  
+
 
   const blogForm = () => {
     const hideWhenVisible = { display: formVisible ? 'none' : '' }
@@ -167,22 +167,22 @@ const compareNumbers= (a, b) => {
       </div>
     )
   }
-  
+
 return (
     <div>
       <h1>Blogs!</h1>
-      <Notification message={notifMessage} type={notifType}/> 
+      <Notification message={notifMessage} type={notifType}/>
       {!user && loginForm()}
       {user && <div>
        <p>{user.name} logged in  </p>
         <button onClick={handleLogout}>Logout </button>
         {blogForm()}
       </div>
-      } 
+      }
       <h2>Blogs</h2>
       {sortedBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} handleLike={handleLike} deleteBlog={removeBlog} />
-      )} 
+      )}
     </div>
   )
 }

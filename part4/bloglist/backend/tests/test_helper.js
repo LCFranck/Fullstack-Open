@@ -5,23 +5,23 @@ const bcrypt = require('bcrypt')
 const initialBlogs = [
   {
     title: 'katt',
-    author: "kissemisse",
-    url: "äxde.ax",
+    author: 'kissemisse',
+    url: 'äxde.ax',
     likes: 4,
   },
-    {
+  {
     title: 'hund',
-    author: "vovve",
-    url: "woff.ax",
+    author: 'vovve',
+    url: 'woff.ax',
     likes: 5,
   },
   {
-    title: "Goose activities",
-    author: "Joe Gas",
-    url: "uhhhhhhhhhhh.com",
+    title: 'Goose activities',
+    author: 'Joe Gas',
+    url: 'uhhhhhhhhhhh.com',
     likes: 500000000
-  
-}
+
+  }
 ]
 
 const nonExistingId = async () => {
@@ -56,7 +56,7 @@ const logInToken = async (api, username = 'testuser', password = 'sekret') => {
   const response = await api
     .post('/api/login')
     .send({ username, password })
-  
+
   return response.body.token
 }
 

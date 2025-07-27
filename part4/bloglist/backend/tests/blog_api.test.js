@@ -1,7 +1,7 @@
 const assert = require('node:assert')
 const bcrypt = require('bcrypt')
 
-const { test, after, beforeEach, describe, before } = require('node:test')
+const { test, after, beforeEach, describe } = require('node:test')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app  = require('../app')
@@ -13,34 +13,34 @@ const User = require('../models/user')
 
 const api = supertest(app)
 
-let token =""
+let token =''
 
 
 describe('one user and a few blogs', () => {
   beforeEach(async () => {
     await User.deleteMany({})
     const testUser = await helper.createTestUser()
-    const user = await User.findOne({username: 'testuser'})
-    console.log(user._id+"USER HERE")
+    const user = await User.findOne({ username: 'testuser' })
+    console.log(user._id+'USER HERE')
 
 
     await Blog.deleteMany({})
-    const blogsWithUser = helper.initialBlogs.map(blog => ({//sets the test user as the owner of the blogs
+    const blogsWithUser = helper.initialBlogs.map(blog => ({ //sets the test user as the owner of the blogs
       ...blog,
       user: testUser._id
     }))
-    console.log(blogsWithUser[0].user+"BLOG HERE")
+    console.log(blogsWithUser[0].user+'BLOG HERE')
     const savedBlogs = await Blog.insertMany(blogsWithUser)
     user.blogs = await savedBlogs.map(b => b._id)
     await user.save()
     token = await helper.logInToken(api)
-})
+  })
   describe('Earlier tests, adding, changing and deleting blogs.', () => {
     test('a valid blog can be added ', async () => {
       const newBlog = {
         title: 'betterhund',
-        author: "Wolfina Woff",
-        url: "woffwoff.fi",
+        author: 'Wolfina Woff',
+        url: 'woffwoff.fi',
         likes: 10,
       }
       await api
@@ -59,32 +59,32 @@ describe('one user and a few blogs', () => {
     })
 
     test('a new blog with unspecified likes, will have 0 likes ', async () => {
-        const newBlog = {
-            title: 'unlikedblog',
-            author: "Unlikeable person",
-            url: "saakeli.fi",
-        }
-        await api
-            .post('/api/blogs')
-            .set('Authorization', `Bearer ${token}`)
-            .send(newBlog)
-            .expect(201)
-            .expect('Content-Type', /application\/json/)
+      const newBlog = {
+        title: 'unlikedblog',
+        author: 'Unlikeable person',
+        url: 'saakeli.fi',
+      }
+      await api
+        .post('/api/blogs')
+        .set('Authorization', `Bearer ${token}`)
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
 
-        const response = await helper.blogsInDb()
-      
-        const likes = response.map(e => e.likes)
-        assert(likes.includes(0))
+      const response = await helper.blogsInDb()
+
+      const likes = response.map(e => e.likes)
+      assert(likes.includes(0))
     })
 
     test('new blog with unspecified title', async () => {
       const newBlog = {
-        author: "mysterious person",
-        url: "avasfafw.com",
+        author: 'mysterious person',
+        url: 'avasfafw.com',
         likes: 3000,
       }
 
-        await api.post('/api/blogs')
+      await api.post('/api/blogs')
         .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(400)
@@ -97,12 +97,12 @@ describe('one user and a few blogs', () => {
 
     test('new blog with unspecified url', async () => {
       const newBlog = {
-        title: "avasfafw",
-        author: "mysterious person",
+        title: 'avasfafw',
+        author: 'mysterious person',
         likes: 3000,
       }
 
-        await api.post('/api/blogs')
+      await api.post('/api/blogs')
         .set('Authorization', `Bearer ${token}`)
         .send(newBlog)
         .expect(400)
@@ -159,7 +159,7 @@ describe('one user and a few blogs', () => {
       assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
     })
 
-    test("a blog's likes can be updated", async () => {
+    test('a blog\'s likes can be updated', async () => {
       const blogsAtStart = await helper.blogsInDb()
       const blogToUpdate = blogsAtStart[0]
 

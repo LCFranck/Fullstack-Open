@@ -37,4 +37,4 @@ const remove = async (deleteObject) => {
 }
 
 
-export default { getAll, setToken, create, update, remove}
+export default { getAll, setToken, create, update, remove }
