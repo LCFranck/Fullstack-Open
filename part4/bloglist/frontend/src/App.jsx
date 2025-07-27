@@ -40,7 +40,23 @@ const App = () => {
     }
   }, [])
 
+  const removeBlog = (blogObject) => {
+    
+        console.log("deleted!!")
+        
+        blogService.remove(blogObject.id).then(() => {
+          setNotifType('success')
+          setBlogs(blogs.filter(newBlog => newBlog.id !== blogObject.id))
+          setNotification(` the blog '${blogObject.title}' was removed`)        
+          setTimeout(() => {setNotification(null)}, 5000)
+        })
+          .catch(() => {   
+          setNotifType('error')   
+          setNotification(` the blog '${blogObject.title}' was note removed, you do not have the rights or it was already removed.`)        
+          setTimeout(() => {setNotification(null)}, 5000)  
+        })
 
+  }
   const handleLike = id => {
       const blog = blogs.find(n => n.id === id)
       const changedBlog = { ...blog, likes: blog.likes + 1 }
@@ -165,7 +181,7 @@ return (
       } 
       <h2>Blogs</h2>
       {sortedBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} deleteBlog={removeBlog} />
       )} 
     </div>
   )

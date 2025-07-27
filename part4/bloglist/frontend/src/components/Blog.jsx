@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, deleteBlog }) => {
   
     const [showDetails, setShowDetails] = useState(false)
 
@@ -17,6 +17,10 @@ const Blog = ({ blog, handleLike }) => {
     setShowDetails(!showDetails) 
   }
 
+  const handleDelete = async (event) => {
+    deleteBlog(blog) 
+  }
+
   return(
     <div style={blogStyle}>
      {!showDetails && <div>
@@ -25,12 +29,13 @@ const Blog = ({ blog, handleLike }) => {
    </div> } 
     {showDetails && <div>
       <div>Title: {blog.title}</div>
+      <button onClick={handleShow}>hide</button>
       <div>Author: {blog.author}</div>
       <div>Likes: {blog.likes}
         <button onClick={() => handleLike(blog.id)}>like</button>
       </div>
       <div>URL: {blog.url}</div>
-      <button onClick={handleShow}>hide</button>
+      <button onClick={handleDelete}>delete</button>
     </div> } 
    </div> 
   
