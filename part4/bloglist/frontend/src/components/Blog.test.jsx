@@ -36,23 +36,55 @@ test('rendered content should not have likes', () => {
 
 })
 
-/* test('clicking the like button twice calls event handler twice', async () => {
+test('after pressing "show" numbers of like sshouold be visible', async () => {
+  const blog = {
+    title: 'testing testing',
+    author: 'testi cles',
+    url: 'testingtesting.ax',
+    likes: 0
+  }
+
+  render(<Blog blog={blog} />)
+
+    const user = userEvent.setup()
+    const button = screen.getByText('show')
+    await user.click(button)
+
+    const element = screen.queryByText('Likes: 0')
+
+    expect(element).toBeDefined()
+
+})
+
+
+test('clicking the like button twice calls event handler twice', async () => {
     const blog = {
-        content: 'Component testing is done with react-testing-library',
-        important: true
-    }
+      title: 'testing testing',
+      author: 'testi cles',
+      url: 'testingtesting.ax',
+      likes: 0
+  }
 
     const mockHandler = vi.fn()
 
     render(
-        <Blog blog={blog} toggleImportance={mockHandler} />
+        <Blog blog={blog} handleLike = {mockHandler}/>
     )
 
     const user = userEvent.setup()
-    const button = screen.getByText('like')
+    const button = screen.getByText('show')
     await user.click(button)
-    await user.click(button)
+
+    const button2 = screen.getByText('like')
+    await user.click(button2)
+    await user.click(button2)
 
 
     expect(mockHandler.mock.calls).toHaveLength(2)
-}) */
+})
+
+/* 5.16: Blog List Tests, step 4
+
+Make a test for the new blog form. The test should check,
+ that the form calls the event handler it received
+ as props with the right details when a new blog is created. */
