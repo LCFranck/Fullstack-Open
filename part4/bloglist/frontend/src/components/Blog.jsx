@@ -46,8 +46,7 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
 }
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  handleLike: PropTypes.func.isRequired,
-  deleteBlog: PropTypes.func.isRequired
+
 
 }
 export default Blog

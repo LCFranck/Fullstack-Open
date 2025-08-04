@@ -11,7 +11,8 @@
     "dev": "cross-env NODE_ENV=development node --watch index.js",
     "test": "cross-env  NODE_ENV=test node --test",
     "lint": "eslint .",
-    "lintfix": "eslint --fix --ext .js,.jsx ."
+    "lintfix": "eslint --fix --ext .js,.jsx .",
+    "start:test": "NODE_ENV=test node index.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
