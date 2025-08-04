@@ -31,19 +31,36 @@ const App = () => {
     setSortedBlogs(sorted);
 }, [blogs]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      //setUser(user)
       blogService.setToken(user.token)
+    }
+  }, []) */
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      blogService.setToken(user.token)
+
+      blogService.getMe(user.token)
+        .then(() => {
+          setUser(user)
+        })
+        .catch(() => {
+          window.localStorage.removeItem('loggedBlogAppUser')
+          blogService.setToken(null)
+          setUser(null)
+        })
     }
   }, [])
 
   const removeBlog = (blogObject) => {
 
         console.log("deleted!!")
-
         blogService.remove(blogObject.id).then(() => {
           setNotifType('success')
           setBlogs(blogs.filter(newBlog => newBlog.id !== blogObject.id))
