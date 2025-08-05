@@ -1,6 +1,8 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
 
 describe('Blog app', () => {
+  
+
   beforeEach(async ({ page, request }) => {
     await request.post('http://localhost:3001/api/testing/reset')
     await request.post('http://localhost:3001/api/users', {
@@ -51,25 +53,49 @@ describe('Blog app', () => {
 
 
   describe('when logged in', () => {
-    beforeEach(async ({ page }) => {
-     // await page.getByRole('button', { name: 'log in' }).click()
+      beforeEach(async ({ page, request }) => {
       await page.getByTestId('username').fill('tehe')
       await page.getByTestId('password').fill('tehe')
       await page.getByRole('button', { name: 'login' }).click()
-    })
 
-    test('a new note can be created', async ({ page }) => {
-   //   await page.getByRole('button', { name: 'log in' }).click()
+      })
+    
+      test('a new note can be created', async ({ page }) => {
+    //   await page.getByRole('button', { name: 'log in' }).click()
+    // await page.getByRole('button', { name: 'log in' }).click()
+        
+        await page.getByRole('button', { name: 'add blog' }).click()
+        await page.getByTestId('title').fill('test title')
+        await page.getByTestId('author').fill('Dr Test')
+        await page.getByTestId('url').fill('testingtesting.se')
 
-      await page.getByRole('button', { name: 'add blog' }).click()
-      await page.getByTestId('title').fill('test title')
-      await page.getByTestId('author').fill('Dr Test')
-      await page.getByTestId('url').fill('testingtesting.se')
+        await page.getByRole('button', { name: 'save' }).click()
+        await expect(page.getByText('blog was added!')).toBeVisible()
+      // await expect(page.getByText('blog was added!')).toBeVisible()
 
-      await page.getByRole('button', { name: 'save' }).click()
-      await expect(page.getByText('test title')).toBeVisible()
-     // await expect(page.getByText('blog was added!')).toBeVisible()
+      })
+      test('a new note can be liked', async ({ page }) => {
+    //   await page.getByRole('button', { name: 'log in' }).click()
+    // await page.getByRole('button', { name: 'log in' }).click()
+        
+        await page.getByRole('button', { name: 'add blog' }).click()
+        await page.getByTestId('title').fill('test title to like')
+        await page.getByTestId('author').fill('Dr Liked Test')
+        await page.getByTestId('url').fill('testingtesting.se')
 
-    })
+        await page.getByRole('button', { name: 'save' }).click()
+
+        await page.getByRole('button', { name: 'show' }).click()
+        await page.getByRole('button', { name: 'like' }).click()
+
+
+
+        
+
+
+        await expect(page.getByText('Likes: 1')).toBeVisible()
+      // await expect(page.getByText('blog was added!')).toBeVisible()
+
+      })
   })  
 })
