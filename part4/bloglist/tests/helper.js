@@ -23,4 +23,16 @@ const createBlog = async (page, title, author, url) => {
 
 }
 
+/* const likeBlog = async (page, blogElement, amount) => {
+    await blogElement.getByRole('button', { name: 'show' }).click()
+    blogElement = page.locator('.blog').filter({ hasText: 'good blog' }).first()
+
+    for (let i = 1; i <= amount; i++) {
+    await blogElement.getByRole('button', { name: 'like' }).click()
+    await expect(blogElement).toContainText(`Likes: ${i}`)
+    }
+} */
+
+
+
 export { loginWith, createBlog }

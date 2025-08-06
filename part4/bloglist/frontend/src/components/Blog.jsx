@@ -25,13 +25,13 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
   }
 
   return(
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog" data-testid="blog">
      {!showDetails && <div>
       {blog.title} {blog.author}
       <button onClick={handleShow}>show</button>
    </div> }
     {showDetails && <div>
-      <div>Title: {blog.title}</div>
+      <span>Title: {blog.title}</span>
       <button onClick={handleShow}>hide</button>
       <div>Author: {blog.author}</div>
       <div>Likes: {blog.likes}
