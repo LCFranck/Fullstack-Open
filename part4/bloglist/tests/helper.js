@@ -1,10 +1,4 @@
 
-/* 
-const blogs = [
-    { title: 'unimpressive blog', author: 'Becca Bored', url: 'idontevencareaboutlikes.com', likes: 2 },
-    { title: 'goose activities', author: 'joe gas', url: 'goose.com', likes: 6000000 },
-    { title: 'bog facts', author: 'Bog lover', url: 'ilovebogs.com', likes: 100 }
-] */
 
 const loginWith = async (page, username, password)  => {
   await page.getByTestId('username').fill(username)
@@ -22,17 +16,5 @@ const createBlog = async (page, title, author, url) => {
     await page.getByRole('button', { name: 'cancel' }).click()
 
 }
-
-/* const likeBlog = async (page, blogElement, amount) => {
-    await blogElement.getByRole('button', { name: 'show' }).click()
-    blogElement = page.locator('.blog').filter({ hasText: 'good blog' }).first()
-
-    for (let i = 1; i <= amount; i++) {
-    await blogElement.getByRole('button', { name: 'like' }).click()
-    await expect(blogElement).toContainText(`Likes: ${i}`)
-    }
-} */
-
-
 
 export { loginWith, createBlog }

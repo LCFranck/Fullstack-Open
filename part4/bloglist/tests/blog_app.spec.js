@@ -32,10 +32,7 @@ describe('Blog app', () => {
     await page.getByTestId('username').fill('tehe')
     await page.getByTestId('password').fill('tehe')
     await loginWith(page,'tehe','tehe')
-   /*  await textboxes[0].fill('tehe')    
-    await textboxes[1].fill('tehe') */
-   // await page.getByRole('button', { name: 'login' }).click()
-  
+
     await expect(page.getByText('caca logged in')).toBeVisible()
     })
 
@@ -80,7 +77,6 @@ describe('Blog app', () => {
 
 
         test('user can delete their own blog', async ({ page }) => {
-         // await createBlog(page, "deletethisblogplease", "Dr Delete", "deletable.com")
           await page.getByRole('button', { name: 'show' }).click()
           await page.getByRole('button', { name: 'delete' }).click()
           await expect(page.getByText("the blog 'good blog' was removed")).toBeVisible()
@@ -108,12 +104,12 @@ describe('Blog app', () => {
 
           for (let i = 1; i <= 4; i++) {
             await blogElement.getByRole('button', { name: 'like' }).click()
-            await expect(blogElement).toContainText(`Likes: ${i}`) //to ensure UI is updated
+            await expect(blogElement).toContainText(`Likes: ${i}`) 
           }
 
           let blogElement2 = page.locator('.blog').filter({ hasText: 'Blog 2' }).first()
 
-          await expect(blogElement2.getByRole('button', { name: 'show' })).toBeVisible() //to ensure button is visible
+          await expect(blogElement2.getByRole('button', { name: 'show' })).toBeVisible()
           await blogElement2.getByRole('button', { name: 'show' }).click()
           blogElement2 = page.locator('.blog').filter({ hasText: 'Blog 2' }).first()
 
