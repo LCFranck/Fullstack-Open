@@ -26,7 +26,6 @@ const App = () => {
   const handleVote = () => {
     console.log('Vote Button pressed', selected )
     const copy = [...allVotes]
-      // increment the value in position 2 by one
     copy[selected] += 1  
     setVotes(copy)
 
