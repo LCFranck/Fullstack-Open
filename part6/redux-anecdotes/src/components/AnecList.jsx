@@ -3,20 +3,16 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
 
-/* const Note = ({ note, handleClick }) => {
-  return(
-    <li onClick={handleClick}>
-      {note.content} 
-      <strong> {note.important ? 'important' : ''}</strong>
-    </li>
-  )
-} */
+
 
 const AnecList = () => {
-    const anecdotes = useSelector(state => state)
+    const anecdotes = useSelector(state => state.anecdotes)
+    const filter = useSelector(state => state.filter)
 
-    const sortedAnecdotes = [...anecdotes].sort((a, b) => b.votes - a.votes)
+    const anecdotesToShow = anecdotes.filter(anecdote => anecdote?.content?.toLowerCase().includes(filter.toLowerCase()))
 
+
+    const sortedAnecdotes = [...anecdotesToShow].sort((a, b) => b.votes - a.votes)
 
     const dispatch = useDispatch()
 

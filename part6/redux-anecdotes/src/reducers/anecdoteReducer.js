@@ -34,21 +34,6 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-/* const counterReducer = (state = initialState, action) => {
-  console.log(action)
-  switch (action.type) {
-    case 'GOOD':
-      return { ...state, good: state.good + 1 }
-    case 'OK':
-      return  { ...state, ok: state.ok + 1 }
-    case 'BAD':
-      return  { ...state, bad: state.bad + 1 }
-    case 'ZERO':
-      return 0
-    default: return  { ...state, bad:0, good:0,ok:0 }
-  }
-  
-} */
 
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
