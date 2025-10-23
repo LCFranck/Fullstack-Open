@@ -39,8 +39,8 @@ const AnecList = () => {
                     </div>
             
             )}
-        </ul>
-            )
-    }
+        </ul>)
+            
+  }
 
 export default AnecList
