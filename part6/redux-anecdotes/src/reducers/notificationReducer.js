@@ -13,9 +13,7 @@ const notificationSlice = createSlice({
       return action.payload
     },
     hideNotification() {
-        return null
-     
-      
+        return null 
     }
   },
 })
