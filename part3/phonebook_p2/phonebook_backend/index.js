@@ -116,10 +116,7 @@ app.post('/api/persons', (request, response, next) => {
       response.status(201).json(result)
     })
       .catch(error => next(error))
-
-
   }
-
 })
 
 const unknownEndpoint = (request, response) => {

@@ -9,6 +9,25 @@ const getAll = async () => {
 
     return await response.json()
 }
+const vote = async (id) => {
+  // Read the JSON file using require
+    const response = await fetch(`${baseUrl}/${id}`)
+    if (!response.ok) {
+        throw new Error('Failed to fetch anecdotes')
+    }
+    const anecdote = await response.json()
+    console.log(anecdote)
+
+    const updateResponse = await fetch(`${baseUrl}/${id}`, {
+      method: 'PUT', 
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({...anecdote, votes: anecdote.votes + 1})
+    })
+
+    return await updateResponse.json()
+
+}
+
 const createNew = async (content) => {
   const options = {
     method: 'POST',
@@ -25,4 +44,6 @@ const createNew = async (content) => {
   return await response.json()
 }
 
-export default { getAll, createNew }
+
+
+export default { getAll, createNew, vote }
