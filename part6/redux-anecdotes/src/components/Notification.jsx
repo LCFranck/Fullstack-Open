@@ -15,12 +15,6 @@ const Notification = () => {
     borderWidth: 1
   }
 
- // const dispatch = useDispatch()
-  //dispatch(aChange())
-  
-
-    
-
   return (
     <div style={style}>
       {notification}
