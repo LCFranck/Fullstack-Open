@@ -14,37 +14,33 @@ mongoose.set('strictQuery',false)
 mongoose.connect(url)
 
 const personSchema = new mongoose.Schema({
-    name: String, 
-    number: String
-    
+  name: String,
+  number: String
+
 })
 
 const Person = mongoose.model('Person', personSchema)
 
-Person.find({}).then(result => {
-  result.forEach(person => {
-    console.log(person)
-  })
-  mongoose.connection.close()
-}) 
 
- const person = new Person({
-    name: process.argv[3], 
-    number: process.argv[4],
+
+const person = new Person({
+  name: process.argv[3],
+  number: process.argv[4],
 })
 
 if (person.name && person.number){
-    person.save().then(result => {
-    console.log('person saved!')
+  person.save().then(() => {
+    console.log(`added ${person.name} number ${person.number} to phonebook`)
     mongoose.connection.close()
-    })
+  })
+  //added Anna number 040-1234556 to phonebook
 }
 else {
-    Person.find({}).then(result => {
+  Person.find({}).then(result => {
     result.forEach(person => {
-    console.log(person)
+      console.log(person)
+    })
+    mongoose.connection.close()
   })
-  mongoose.connection.close()
-}) 
 
 }

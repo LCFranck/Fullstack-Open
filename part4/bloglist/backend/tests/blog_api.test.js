@@ -23,7 +23,6 @@ describe('one user and a few blogs', () => {
     const user = await User.findOne({ username: 'testuser' })
     console.log(user._id+'USER HERE')
 
-
     await Blog.deleteMany({})
     const blogsWithUser = helper.initialBlogs.map(blog => ({ //sets the test user as the owner of the blogs
       ...blog,
