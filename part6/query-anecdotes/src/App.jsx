@@ -18,15 +18,15 @@ const App = () => {
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
-      notificationDispatch({type: "NEW", payload: newAnecdote })//ändra
+      notificationDispatch({type: "NEW", payload: newAnecdote })/
       setTimeout(() => {
-        notificationDispatch({ type: 'HIDE' })  // a new action handled by the reducer
+        notificationDispatch({ type: 'HIDE' }) 
       }, 5000)
     },
     onError:() =>{
-      notificationDispatch({type: "ERROR"})//ändra
+      notificationDispatch({type: "ERROR"})
       setTimeout(() => {
-        notificationDispatch({ type: 'HIDE' })  // a new action handled by the reducer
+        notificationDispatch({ type: 'HIDE' }) 
       }, 5000)
     }
     })
@@ -42,7 +42,7 @@ const App = () => {
     updateAnecdoteMutation.mutate({ ...anecdote, votes: (anecdote.votes + 1) })
     notificationDispatch({type: "VOTE", payload: anecdote })//ändra
     setTimeout(() => {
-        notificationDispatch({ type: 'HIDE' })  // a new action handled by the reducer
+        notificationDispatch({ type: 'HIDE' }) 
       }, 5000)
 
     console.log('vote')
