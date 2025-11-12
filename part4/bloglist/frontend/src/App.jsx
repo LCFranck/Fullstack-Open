@@ -31,14 +31,7 @@ const App = () => {
     setSortedBlogs(sorted);
 }, [blogs]);
 
-/*   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      //setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, []) */
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -163,12 +156,9 @@ const App = () => {
     </form>
   )
 
-const compareNumbers= (a, b) => {
-  return b.likes - a.likes
-}
-
-
-
+  const compareNumbers= (a, b) => {
+    return b.likes - a.likes
+  }
 
   const blogForm = () => {
     const hideWhenVisible = { display: formVisible ? 'none' : '' }
@@ -200,7 +190,7 @@ return (
       }
       <h2>Blogs</h2>
       {sortedBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} deleteBlog={removeBlog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} deleteBlog={removeBlog} currentUser={user} />
       )}
     </div>
   )

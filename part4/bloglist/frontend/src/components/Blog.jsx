@@ -3,9 +3,10 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 
-const Blog = ({ blog, handleLike, deleteBlog }) => {
+const Blog = ({ blog, handleLike, deleteBlog, currentUser }) => {
 
     const [showDetails, setShowDetails] = useState(false)
+    const [showDelete, setShowDelete] = useState(false)
 
     const blogStyle = {
     paddingTop: 10,
@@ -18,7 +19,13 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
 
   const handleShow = async () => {
     setShowDetails(!showDetails)
+    if (currentUser !== null && currentUser.name === blog.user.username){
+        console.log(currentUser.name + "HÄR E CURRENT USER!")
+        setShowDelete(true)
+    }
   }
+
+
 
   const handleDelete = async () => {
     deleteBlog(blog)
@@ -38,7 +45,9 @@ const Blog = ({ blog, handleLike, deleteBlog }) => {
         <button onClick={() => handleLike(blog.id)}>like</button>
       </div>
       <div>URL: {blog.url}</div>
-      <button onClick={handleDelete}>delete</button>
+      {showDelete && <div>
+        <button onClick={handleDelete}>delete</button>
+        </div> }
     </div> }
    </div>
 
