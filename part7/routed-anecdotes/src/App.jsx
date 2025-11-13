@@ -1,12 +1,10 @@
 import { useState } from 'react'
 
 import {
-  BrowserRouter as Router,
+  
   Routes,
   Route,
   Link,
-  Navigate,
-  useParams,
   useNavigate,
   useMatch
 } from "react-router-dom"
@@ -26,12 +24,17 @@ const Menu = () => {
     </div>
   )
 }
-
+//`You voted for ${action.payload.content}`
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id} >
+        <Link to={`/anecdotes/${anecdote.id}`}>
+          {anecdote.content}
+        </Link>
+        
+        </li>)}
     </ul>
   </div>
 )
@@ -44,7 +47,7 @@ const About = () => (
     <em>An anecdote is a brief, revealing account of an individual person or an incident.
       Occasionally humorous, anecdotes differ from jokes because their primary purpose is not simply to provoke laughter but to reveal a truth more general than the brief tale itself,
       such as to characterize a person by delineating a specific quirk or trait, to communicate an abstract idea about a person, place, or thing through the concrete details of a short narrative.
-      An anecdote is "a story with a point."</em>
+      An anecdote is a story with a point.</em>
 
     <p>Software engineering is full of excellent anecdotes, at this app you can find the best and add more.</p>
   </div>
@@ -58,10 +61,11 @@ const Footer = () => (
   </div>
 )
 
-const CreateNew = (addNew) => {
+const CreateNew = ({addNew}) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+  const navigate = useNavigate()
 
 
   const handleSubmit = (e) => {
@@ -72,6 +76,7 @@ const CreateNew = (addNew) => {
       info,
       votes: 0
     })
+    navigate("/")
   }
 
   return (
@@ -91,11 +96,24 @@ const CreateNew = (addNew) => {
           <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
         </div>
         <button>create</button>
+        
       </form>
     </div>
   )
 
 }
+
+const Anecdote = ({ anecdote }) => {
+
+  return (
+    <div>
+      <h2>{anecdote.content}</h2>
+      <div>{anecdote.author}</div>
+     
+    </div>
+  )
+}
+
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -127,12 +145,21 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000)
     setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`New anecdote: ${anecdote.content}`)
+    setTimeout(() => { (setNotification(""))}, 4000)
   }
+ 
+  const match = useMatch('/anecdotes/:id')
 
-  const anecdoteById = (id) =>
+  const anecdoteById = match
+    ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
+    : null
+ 
+
+/*   const anecdoteById = (id) =>
     anecdotes.find(a => a.id === id)
-
-  const vote = (id) => {
+ */
+/*   const vote = (id) => {
     const anecdote = anecdoteById(id)
 
     const voted = {
@@ -141,62 +168,30 @@ const App = () => {
     }
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
-  }
+  } */
   
 
 return (
     <div>
       <div>
         <Menu />
+        <h2>{notification}</h2>
       </div>
       <Routes>
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
+        <Route path="/anecdotes/:id" element={<Anecdote anecdote={anecdoteById} />} />
+        <Route path="/about" element={<About />} />
       </Routes>
       <div>
         <br />
-        <em>Note app, Department of Computer Science 2022</em>
         <Footer />
       </div>
     </div>
   )
 
-/*   return (
-    <div>
-      <h1>Software anecdotes</h1>
-      <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
-      <Footer />
-    </div>
-  ) */
 }
 
 export default App
 
-/* return (
-    <div>
-      <div>
-        <Link style={padding} to="/">home</Link>
-        <Link style={padding} to="/notes">notes</Link>
-        <Link style={padding} to="/users">users</Link>
-        {user
-          ? <em>{user} logged in</em>
-          : <Link style={padding} to="/login">login</Link>
-        }
-      </div>
-      <Routes>
-        <Route path="/notes/:id" element={<Note note={note} />} />
-        <Route path="/notes" element={<Notes notes={notes} />} />
-        <Route path="/users" element={user ? <Users /> : <Navigate replace to="/login" />} />
-        <Route path="/login" element={<Login onLogin={login} />} />
-        <Route path="/" element={<Home />} />
-      </Routes>
-      <div>
-        <br />
-        <em>Note app, Department of Computer Science 2022</em>
-      </div>
-    </div>
-  ) */
  

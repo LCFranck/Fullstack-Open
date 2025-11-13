@@ -49,4 +49,5 @@ app.use(middleware.errorHandler)
 
 module.exports = { app, connectionPromise }
  */
+
 module.exports = app
