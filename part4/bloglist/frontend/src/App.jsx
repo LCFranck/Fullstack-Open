@@ -121,10 +121,9 @@ const App = () => {
     blogService
       .create(blogObject)
         .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-
+         const blogWithUser = { ...returnedBlog, user: user }
+        setBlogs(blogs.concat(blogWithUser))
       })
-
       setNotifType('success'),
         setNotification(`blog was added!`),
         setTimeout(() => {setNotification(null)}, 5000)

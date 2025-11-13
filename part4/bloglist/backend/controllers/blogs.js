@@ -70,24 +70,23 @@ blogsRouter.delete('/:id',userExtractor, async (request, response) => {
 
 
 
-blogsRouter.put('/:id', (request, response, next) => {
+blogsRouter.put('/:id', async (request, response, next) => {
   const { title, author, url, likes } = request.body
 
-  Blog.findById(request.params.id)
-    .then((blog) => {
-      if (!blog) {
-        return response.status(404).end()
-      }
-      blog.title = title,
-      blog.author = author,
-      blog.url = url,
-      blog.likes = likes
+  try {
+    const blog = await Blog.findById(request.params.id)
+    blog.title = title,
+    blog.author = author,
+    blog.url = url,
+    blog.likes = likes
 
-      return blog.save().then((updatedBlog) => {
-        response.json(updatedBlog)
-      })
-    })
-    .catch((error) => next(error))
+    const updatedBlog = await blog.save()
+    await response.json(updatedBlog)
+    return updatedBlog
+  }
+  catch (error) {
+    next(error)
+  }
 })
 
 
