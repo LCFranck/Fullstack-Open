@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types';
+import useField from "./hooks/useField"
 
 import {
   
@@ -39,6 +41,7 @@ const AnecdoteList = ({ anecdotes }) => (
   </div>
 )
 
+
 const About = () => (
   <div>
     <h2>About anecdote app</h2>
@@ -62,42 +65,54 @@ const Footer = () => (
 )
 
 const CreateNew = ({addNew}) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+ // const [content, setContent] = useState('')
+ // const [author, setAuthor] = useState('')
+  //const [info, setInfo] = useState('')
   const navigate = useNavigate()
 
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
+//        <input  {...name} /> 
 
   const handleSubmit = (e) => {
     e.preventDefault()
     addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     navigate("/")
+  }
+  const handleReset = () => {
+    console.log(content.value)
+    content.onReset()
+    author.onReset()
+    info.onReset()
+
   }
 
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input  {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input  {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input  {...info} />
         </div>
-        <button>create</button>
-        
+        <button onClick={handleSubmit}>create</button>
+        <button type="reset" onClick = {handleReset}>reset</button>
       </form>
+     
     </div>
   )
 
