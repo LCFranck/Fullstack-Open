@@ -1,0 +1,11 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlaGUiLCJpZCI6IjY4ODBkNzhhNmJmYmE1YTBkOTIzZTgyYyIsImlhdCI6MTc1MzI3NDM2NCwiZXhwIjoxNzUzMjc3OTY0fQ.OyAIkPusb-GhAj9PudNDFKbLZk6ucFE98O3DfnXPK2Y
+
+{
+  "title": "Jej",
+  "author": "Cacce wa",
+  "url": "wao.com",
+  "likes": 342  
+}
+
