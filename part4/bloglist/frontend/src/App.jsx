@@ -5,6 +5,12 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 
+
+//I have corrected this file after submitting it. if that is not ok, then the original submissions can be found on github at ab411c368aa9d7c3b0a248d3f198d2ac6333b5d1.
+// The CL database task was moved to a separate folder at that point and only works if it is in the correct folder. Sorry for the confusion.
+
+
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -46,6 +52,7 @@ const App = () => {
 
         console.log("deleted!!")
         blogService.remove(blogObject.id).then(() => {
+          setBlogs(blogs.filter(b => b.id !== blogObject.id))
           setNotifType('success')
           setBlogs(blogs.filter(newBlog => newBlog.id !== blogObject.id))
           setNotification(` the blog '${blogObject.title}' was removed`)

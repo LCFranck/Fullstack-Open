@@ -8,13 +8,16 @@ import BlogForm from "./components/BlogForm";
 import { useDispatch } from 'react-redux'
 
 
-import { notificationType, notification } from "./reducers/notificationReducer";
+
+import { notification } from "./reducers/notificationReducer";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
+
+  const KEY = "loggedBlogAppUser"
 
   const [sortedBlogs, setSortedBlogs] = useState([]);
 
@@ -34,34 +37,29 @@ const App = () => {
     setSortedBlogs(sorted);
   }, [blogs]);
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedBlogAppUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      blogService.setToken(user.token);
 
-      blogService
-        .getMe(user.token)
-        .then(() => {
-          setUser(user);
-        })
-        .catch(() => {
-          window.localStorage.removeItem("loggedBlogAppUser");
-          blogService.setToken(null);
-          setUser(null);
-        });
-    }
-  }, []);
+    useEffect(() => {
+     const loggedUserJSON = window.localStorage.getItem(KEY)
+     if (loggedUserJSON) {
+       const user = JSON.parse(loggedUserJSON)
+       setUser(user)
+       blogService.setToken(user.token)
+     }
+   }, [])
+
 
   const removeBlog = (blogObject) => {
     console.log("deleted!!");
     blogService
       .remove(blogObject.id)
       .then(() => {
-        console.log("BLog removed!")
+      setBlogs(blogs.filter(b => b.id !== blogObject.id)),
+        (dispatch(notification(`blog was deleted`, 5, "success")))
+
       })
       .catch(() => {
-        console.log("blog object was not removed due to unforseen circumstances?")
+        (dispatch(notification(`something went wrong!`, 5, "error")))
+
       });
   };
   const handleLike = (id) => {
@@ -71,17 +69,20 @@ const App = () => {
     blogService
       .update(id, changedBlog)
       .then((returnedBlog) => {
-        setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
+        setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog))),
+            (dispatch(notification(`You added liked the blog ${returnedBlog.title}"`, 5, "success")))
+
       })
       .catch(() => {
-        console.log("something went wrong! in voting")
+        (dispatch(notification(`something went wrong!`, 5, "error")))
+
       });
   };
 
   const handleLogout = async (event) => {
     event.preventDefault();
 
-    window.localStorage.removeItem("loggedBlogAppUser");
+    window.localStorage.removeItem(KEY);
     blogService.setToken(null);
     setUser(null);
     setUsername("");
@@ -96,13 +97,13 @@ const App = () => {
         username,
         password,
       });
-      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
+      window.localStorage.setItem(KEY, JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
     } catch (exception) {
-      console.log("something went wrong in login!")
+        (dispatch(notification(`something went wrong!`, 5, "error")))
     }
   };
   const addBlog = (blogObject) => {
@@ -110,8 +111,7 @@ const App = () => {
       const blogWithUser = { ...returnedBlog, user: user };
       setBlogs(blogs.concat(blogWithUser));
     });
-    (dispatch(notificationType("success")),
-      dispatch(notification(`You added a blog ${blogObject.title}"`, 5)))
+    (dispatch(notification(`You added a blog ${blogObject.title}"`, 5, "success")))
   };
 
   const loginForm = () => (
@@ -168,7 +168,7 @@ const App = () => {
       {!user && loginForm()}
       {user && (
         <div>
-          <p>{user.name} logged in </p>
+          <p>{user.username} logged in </p>
           <button onClick={handleLogout}>Logout </button>
           {blogForm()}
         </div>

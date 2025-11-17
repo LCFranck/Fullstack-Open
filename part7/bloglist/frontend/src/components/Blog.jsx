@@ -16,8 +16,8 @@ const Blog = ({ blog, handleLike, deleteBlog, currentUser }) => {
 
   const handleShow = async () => {
     setShowDetails(!showDetails);
-    if (currentUser && blog.user && currentUser.name === blog.user.username) {
-      console.log(currentUser.name + "HÄR E CURRENT USER!");
+    if (currentUser && blog.user && currentUser.username === blog.user.username) {
+      console.log(currentUser.username + "HÄR E CURRENT USER!");
       setShowDelete(true);
     }
   };

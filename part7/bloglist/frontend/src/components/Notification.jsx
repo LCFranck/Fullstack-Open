@@ -1,6 +1,4 @@
- import "../notification.css";
-
-
+import "../notification.css";
 
 import { useSelector } from 'react-redux'
 
@@ -8,16 +6,10 @@ import { useSelector } from 'react-redux'
 
 const Notification = () => {
 
-  const notification = useSelector(state => state.notification)
-  const type = useSelector(state => state.type)
+  const notification = useSelector(state => state.notification.message)
+  const type = useSelector(state => state.notification.type)
 
   if (!notification) return null // hide when no message
-
- /*  const type = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1
-  } */
 
   return (
     <div className={type}>
