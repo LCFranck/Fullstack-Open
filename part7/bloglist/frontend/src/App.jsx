@@ -13,7 +13,7 @@ const App = () => {
 
   const [sortedBlogs, setSortedBlogs] = useState([]);
 
-  const [notifMessage, setNotification] = useState(null);
+  const [notifMessage, setNotification] = useState(null);   /// ändra domhä 2 raderna
   const [notifType, setNotifType] = useState("success");
 
   const [formVisible, setFormVisible] = useState(false);
