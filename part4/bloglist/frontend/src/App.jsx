@@ -13,7 +13,7 @@ const App = () => {
 
   const [sortedBlogs, setSortedBlogs] = useState([])
 
-
+  const KEY = 'loggedBlogappUser'
 
   const [notifMessage, setNotification] = useState(null)
   const [notifType, setNotifType] = useState('success')
@@ -33,21 +33,12 @@ const App = () => {
 
 
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+   useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem(KEY)
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
+      setUser(user)
       blogService.setToken(user.token)
-
-      blogService.getMe(user.token)
-        .then(() => {
-          setUser(user)
-        })
-        .catch(() => {
-          window.localStorage.removeItem('loggedBlogAppUser')
-          blogService.setToken(null)
-          setUser(null)
-        })
     }
   }, [])
 
@@ -75,6 +66,9 @@ const App = () => {
         .update(id, changedBlog)
           .then(returnedBlog => {
           setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog))
+          setNotifType('error')
+          setNotification(` the blog '${blog.title}' was liked`)
+          setTimeout(() => {setNotification(null)}, 5000)
         })
         .catch(() => {
           setNotifType('error')
@@ -87,7 +81,7 @@ const App = () => {
   const handleLogout = async (event) => {
     event.preventDefault()
 
-    window.localStorage.removeItem('loggedBlogappUser')
+    window.localStorage.removeItem(KEY)
     blogService.setToken(null)
       setUser(null)
       setUsername('')
@@ -102,12 +96,15 @@ const App = () => {
         username, password,
       })
       window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
+        KEY, JSON.stringify(user)
       )
       blogService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
+      setNotifType('success')
+      setNotification(` Welcome ${user.name}`)
+      setTimeout(() => {setNotification(null)}, 5000)
     } catch (exception) {
       //setErrorMessage('wrong credentials')
       setNotifType('error')
@@ -182,7 +179,7 @@ return (
       <Notification message={notifMessage} type={notifType}/>
       {!user && loginForm()}
       {user && <div>
-       <p>{user.name} logged in  </p>
+       <p>{user.username} logged in  </p>
         <button onClick={handleLogout}>Logout </button>
         {blogForm()}
       </div>

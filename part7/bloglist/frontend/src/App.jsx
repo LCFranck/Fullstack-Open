@@ -5,6 +5,11 @@ import loginService from "./services/login";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 
+import { useDispatch } from 'react-redux'
+
+
+import { notificationType, notification } from "./reducers/notificationReducer";
+
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
@@ -13,10 +18,12 @@ const App = () => {
 
   const [sortedBlogs, setSortedBlogs] = useState([]);
 
-  const [notifMessage, setNotification] = useState(null);   /// ändra domhä 2 raderna
-  const [notifType, setNotifType] = useState("success");
+ // const [notifMessage, setNotification] = useState(null);   /// ändra domhä 2 raderna
+ // const [notifType, setNotifType] = useState("success");
 
   const [formVisible, setFormVisible] = useState(false);
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -51,21 +58,10 @@ const App = () => {
     blogService
       .remove(blogObject.id)
       .then(() => {
-        setNotifType("success");
-        setBlogs(blogs.filter((newBlog) => newBlog.id !== blogObject.id));
-        setNotification(` the blog '${blogObject.title}' was removed`);
-        setTimeout(() => {
-          setNotification(null);
-        }, 5000);
+        console.log("BLog removed!")
       })
       .catch(() => {
-        setNotifType("error");
-        setNotification(
-          ` the blog '${blogObject.title}' was note removed, you do not have the rights or it was already removed.`,
-        );
-        setTimeout(() => {
-          setNotification(null);
-        }, 5000);
+        console.log("blog object was not removed due to unforseen circumstances?")
       });
   };
   const handleLike = (id) => {
@@ -78,22 +74,19 @@ const App = () => {
         setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)));
       })
       .catch(() => {
-        setNotifType("error");
-        setNotification(` something went wrong!`);
-        setTimeout(() => {
-          setNotification(null);
-        }, 5000);
+        console.log("something went wrong! in voting")
       });
   };
 
   const handleLogout = async (event) => {
     event.preventDefault();
 
-    window.localStorage.removeItem("loggedBlogappUser");
+    window.localStorage.removeItem("loggedBlogAppUser");
     blogService.setToken(null);
     setUser(null);
     setUsername("");
     setPassword("");
+    console.log(user +"här e user")
   };
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -103,18 +96,13 @@ const App = () => {
         username,
         password,
       });
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      window.localStorage.setItem("loggedBlogAppUser", JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
       setUsername("");
       setPassword("");
     } catch (exception) {
-      //setErrorMessage('wrong credentials')
-      setNotifType("error");
-      setNotification(` Wrong username or password!`);
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000);
+      console.log("something went wrong in login!")
     }
   };
   const addBlog = (blogObject) => {
@@ -122,11 +110,8 @@ const App = () => {
       const blogWithUser = { ...returnedBlog, user: user };
       setBlogs(blogs.concat(blogWithUser));
     });
-    (setNotifType("success"),
-      setNotification(`blog was added!`),
-      setTimeout(() => {
-        setNotification(null);
-      }, 5000));
+    (dispatch(notificationType("success")),
+      dispatch(notification(`You added a blog ${blogObject.title}"`, 5)))
   };
 
   const loginForm = () => (
@@ -179,7 +164,7 @@ const App = () => {
   return (
     <div>
       <h1>Blogs!</h1>
-      <Notification message={notifMessage} type={notifType} />
+      <Notification />
       {!user && loginForm()}
       {user && (
         <div>
