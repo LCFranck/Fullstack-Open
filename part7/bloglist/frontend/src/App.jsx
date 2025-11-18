@@ -10,35 +10,35 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { initializeBlogs, appendBlog, increaseLike, deleteBlog } from  "./reducers/blogReducer";
 import { notification } from "./reducers/notificationReducer";
+import { initializeUser, userLogIn,  userLogOut } from "./reducers/userReducer";
+
 
 const App = () => {
-     const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+ // const [user, setUser] = useState(null);
 
-  const KEY = "loggedBlogAppUser"
+  //const KEY = "loggedBlogAppUser"
 
   const [sortedBlogs, setSortedBlogs] = useState([]);
 
   const [formVisible, setFormVisible] = useState(false);
 
   const blogs = useSelector(state => state.blogs)
-
+  const user = useSelector(state => state.user)
 
 
 
   useEffect(() => {
       dispatch(initializeBlogs())
+      dispatch(initializeUser())
+
     }, [dispatch])
 
 
-
- /*  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []); */
 
   useEffect(() => {
     if (blogs){
@@ -48,14 +48,14 @@ const App = () => {
   }, [blogs]);
 
 
-    useEffect(() => {
+  /*   useEffect(() => {
      const loggedUserJSON = window.localStorage.getItem(KEY)
      if (loggedUserJSON) {
        const user = JSON.parse(loggedUserJSON)
        setUser(user)
        blogService.setToken(user.token)
      }
-   }, [])
+   }, []) */
 
 
   const removeBlog = (blogObject) => {
@@ -90,24 +90,18 @@ const App = () => {
 
   const handleLogout = async (event) => {
     event.preventDefault();
+    dispatch(userLogOut())
 
-    window.localStorage.removeItem(KEY);
-    blogService.setToken(null);
-    setUser(null);
     setUsername("");
     setPassword("");
   };
+
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-      window.localStorage.setItem(KEY, JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUser(user);
+      dispatch(userLogIn(username, password))
       setUsername("");
       setPassword("");
     } catch (exception) {
