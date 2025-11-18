@@ -5,14 +5,16 @@ import loginService from "./services/login";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 
-
+import { initializeBlogs, appendBlog, increaseLike, deleteBlog } from  "./reducers/blogReducer";
 import { notification } from "./reducers/notificationReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+     const dispatch = useDispatch()
+
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -21,20 +23,28 @@ const App = () => {
 
   const [sortedBlogs, setSortedBlogs] = useState([]);
 
- // const [notifMessage, setNotification] = useState(null);   /// ändra domhä 2 raderna
- // const [notifType, setNotifType] = useState("success");
-
   const [formVisible, setFormVisible] = useState(false);
 
-  const dispatch = useDispatch()
+  const blogs = useSelector(state => state.blogs)
+
+
+
 
   useEffect(() => {
+      dispatch(initializeBlogs())
+    }, [dispatch])
+
+
+
+ /*  useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
+  }, []); */
 
   useEffect(() => {
-    const sorted = [...blogs].sort(compareNumbers);
-    setSortedBlogs(sorted);
+    if (blogs){
+        const sorted = [...blogs].sort((a, b) => b.likes - a.likes);
+        setSortedBlogs(sorted)
+      }
   }, [blogs]);
 
 
@@ -49,35 +59,34 @@ const App = () => {
 
 
   const removeBlog = (blogObject) => {
-    console.log("deleted!!");
-    blogService
+    try{
+      dispatch(deleteBlog(blogObject)),
+      dispatch(notification(`blog was deleted`, 5, "success"))
+    }
+    catch{
+      (dispatch(notification(`something went wrong!`, 5, "error")))
+    }
+ /*    blogService
+    dispatch(dummyButton(blogs.filter(b => b.id !== blogObject.id))),
       .remove(blogObject.id)
       .then(() => {
-      setBlogs(blogs.filter(b => b.id !== blogObject.id)),
-        (dispatch(notification(`blog was deleted`, 5, "success")))
-
       })
       .catch(() => {
-        (dispatch(notification(`something went wrong!`, 5, "error")))
 
-      });
+      }); */
   };
+
+
+
+
+
   const handleLike = (id) => {
-    const blog = blogs.find((n) => n.id === id);
-    const changedBlog = { ...blog, likes: blog.likes + 1 };
+    const blog = blogs.find((n) => n.id === id)
+   // const changedBlog = { ...blog, likes: blog.likes + 1 };
 
-    blogService
-      .update(id, changedBlog)
-      .then((returnedBlog) => {
-        setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog))),
-            (dispatch(notification(`You added liked the blog ${returnedBlog.title}"`, 5, "success")))
-
-      })
-      .catch(() => {
-        (dispatch(notification(`something went wrong!`, 5, "error")))
-
-      });
-  };
+      dispatch(increaseLike(blog))
+      dispatch(notification(`You liked the blog ${blog.title}"`, 5, "success"))
+  }
 
   const handleLogout = async (event) => {
     event.preventDefault();
@@ -87,7 +96,6 @@ const App = () => {
     setUser(null);
     setUsername("");
     setPassword("");
-    console.log(user +"här e user")
   };
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -107,11 +115,8 @@ const App = () => {
     }
   };
   const addBlog = (blogObject) => {
-    blogService.create(blogObject).then((returnedBlog) => {
-      const blogWithUser = { ...returnedBlog, user: user };
-      setBlogs(blogs.concat(blogWithUser));
-    });
-    (dispatch(notification(`You added a blog ${blogObject.title}"`, 5, "success")))
+    dispatch(appendBlog(blogObject, user));
+    dispatch(notification(`You added a blog ${blogObject.title}"`, 5, "success"))
   };
 
   const loginForm = () => (
@@ -140,9 +145,9 @@ const App = () => {
     </form>
   );
 
-  const compareNumbers = (a, b) => {
+/*   const compareNumbers = (a, b) => {
     return b.likes - a.likes;
-  };
+  }; */
 
   const blogForm = () => {
     const hideWhenVisible = { display: formVisible ? "none" : "" };
@@ -154,7 +159,7 @@ const App = () => {
           <button onClick={() => setFormVisible(true)}>add blog</button>
         </div>
         <div style={showWhenVisible}>
-          <BlogForm addBlog={addBlog} />
+          <BlogForm addBlog={addBlog} user={user} />
           <button onClick={() => setFormVisible(false)}>cancel</button>
         </div>
       </div>
