@@ -1,4 +1,4 @@
-GET http://localhost:3001/api/users
+GET http://localhost:3001/api/blogs
 
 //6880d78a6bfba5a0d923e82c 
 //id fö tehe

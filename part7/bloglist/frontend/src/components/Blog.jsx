@@ -2,9 +2,20 @@ import { useState } from "react";
 
 import PropTypes from "prop-types";
 
-const Blog = ({ blog, handleLike, deleteBlog, currentUser }) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
+
+import {
+
+  Link,
+
+} from "react-router-dom"
+
+/*   <Link to={`/users/${data.id}`}>
+                              {username}
+                          </Link> */
+
+const Blog = ({ blog }) => {
+ // const [showDetails, setShowDetails] = useState(false);
+  //const [showDelete, setShowDelete] = useState(false);
 
   const blogStyle = {
     paddingTop: 10,
@@ -14,7 +25,8 @@ const Blog = ({ blog, handleLike, deleteBlog, currentUser }) => {
     marginBottom: 5,
   };
 
-  const handleShow = async () => {
+
+/*   const handleShow = async () => {
     setShowDetails(!showDetails);
     if (currentUser && blog.user && currentUser.username === blog.user.username) {
       console.log(currentUser.username + "HÄR E CURRENT USER!");
@@ -24,37 +36,23 @@ const Blog = ({ blog, handleLike, deleteBlog, currentUser }) => {
 
   const handleDelete = async () => {
     deleteBlog(blog);
-  };
+  }; */
+
+/*   <Link to={`/users/${data.id}`}>
+                              {username}
+                          </Link> */
 
   return (
     <div style={blogStyle} className="blog" data-testid="blog">
-      {!showDetails && (
-        <div>
-          {blog.title} {blog.author}
-          <button onClick={handleShow}>show</button>
-        </div>
-      )}
-      {showDetails && (
-        <div>
-          <span>Title: {blog.title}</span>
-          <button onClick={handleShow}>hide</button>
-          <div>Author: {blog.author}</div>
-          <div>
-            Likes: {blog.likes}
-            <button onClick={() => handleLike(blog.id)}>like</button>
-          </div>
-          <div>URL: {blog.url}</div>
-          {showDelete && (
-            <div>
-              <button onClick={handleDelete}>delete</button>
-            </div>
-          )}
-        </div>
-      )}
+          <Link to={`/blogs/${blog.id}`}>
+              {blog.title} {blog.author}
+          </Link>
     </div>
   );
 };
+
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
 };
+
 export default Blog;

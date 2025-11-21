@@ -5,14 +5,14 @@ import BlogForm from "./components/BlogForm";
 import UserView from "./components/UserView";
 import UserList from "./components/UserList";
 import Menu from "./components/Menu";
+import BlogView from  "./components/BlogView";
 
-import { useParams } from "react-router-dom";
 
 
 import { useDispatch, useSelector } from 'react-redux'
 
 import { initializeUsers } from  "./reducers/usersReducer";
-import { initializeBlogs, appendBlog, increaseLike, deleteBlog } from  "./reducers/blogReducer";
+import { initializeBlogs, appendBlog } from  "./reducers/blogReducer";
 import { notification } from "./reducers/notificationReducer";
 import { initializeUser, userLogIn,  userLogOut } from "./reducers/userReducer";
 
@@ -63,26 +63,6 @@ const App = () => {
       }
   }, [blogs]);
 
-
-  const removeBlog = (blogObject) => {
-    try{
-      dispatch(deleteBlog(blogObject)),
-      dispatch(notification(`blog was deleted`, 5, "success"))
-    }
-    catch{
-      (dispatch(notification(`something went wrong!`, 5, "error")))
-    }
-  };
-
-
-  const handleLike = (id) => {
-    const blog = blogs.find((n) => n.id === id)
-   // const changedBlog = { ...blog, likes: blog.likes + 1 };
-    //console.log(users)
-
-      dispatch(increaseLike(blog))
-      dispatch(notification(`You liked the blog ${blog.title}"`, 5, "success"))
-  }
 
   const handleLogout = async (event) => {
     event.preventDefault();
@@ -168,10 +148,11 @@ const App = () => {
           <Menu user = {user.username} handleLogout = {handleLogout}/>
         </div>
       )}
-      <Routes>UsersList
-        <Route path="/users/:id" element={<UserView id = {useParams()}/>} />
-        <Route path="/users" element={<UserList/>} />
+      <Routes>
+        <Route path="/users/:id" element={<UserView/>} />
+        <Route path="/blogs/:id" element={<BlogView/>} />
 
+        <Route path="/users" element={<UserList/>} />
         <Route path="/" element={<div>
           {blogForm()}
           <h2>Blogs</h2>
@@ -179,9 +160,6 @@ const App = () => {
               <Blog
                 key={blog.id}
                 blog={blog}
-                handleLike={handleLike}
-                deleteBlog={removeBlog}
-                currentUser={user}
               />
             ))}
           </div>} />
@@ -189,5 +167,7 @@ const App = () => {
     </div>
   );
 };
+
+
 
 export default App;

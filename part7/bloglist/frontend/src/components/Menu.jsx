@@ -12,9 +12,8 @@ const Menu = ({ user, handleLogout }) => {
   }
   return (
     <div>
-        <Link style={padding} to="/">anecdotes</Link>
-        <Link style={padding} to="/blogs">create</Link>
-        <Link style={padding} to="/users">about</Link>
+        <Link style={padding} to="/">blogs</Link>
+        <Link style={padding} to="/users">users</Link>
           <p>{user} logged in </p>
           <button onClick={handleLogout}>Logout </button>
     </div>
