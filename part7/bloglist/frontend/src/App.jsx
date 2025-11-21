@@ -1,27 +1,40 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
-import blogService from "./services/blogs";
-import loginService from "./services/login";
 import Notification from "./components/Notification";
 import BlogForm from "./components/BlogForm";
+import UserView from "./components/UserView";
+import UserList from "./components/UserList";
+import Menu from "./components/Menu";
+
+import { useParams } from "react-router-dom";
+
 
 import { useDispatch, useSelector } from 'react-redux'
 
-
+import { initializeUsers } from  "./reducers/usersReducer";
 import { initializeBlogs, appendBlog, increaseLike, deleteBlog } from  "./reducers/blogReducer";
 import { notification } from "./reducers/notificationReducer";
 import { initializeUser, userLogIn,  userLogOut } from "./reducers/userReducer";
+
+import {
+ // BrowserRouter as Router,
+  Routes,
+  Route,
+  //Link,
+  //Navigate,
+  useNavigate,
+  //useMatch
+} from "react-router-dom"
+
+
 
 
 const App = () => {
   const dispatch = useDispatch()
 
-
+  const navigate = useNavigate()
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
- // const [user, setUser] = useState(null);
-
-  //const KEY = "loggedBlogAppUser"
 
   const [sortedBlogs, setSortedBlogs] = useState([]);
 
@@ -29,12 +42,15 @@ const App = () => {
 
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
+ // const users = useSelector(state => state.users)
+
 
 
 
   useEffect(() => {
       dispatch(initializeBlogs())
       dispatch(initializeUser())
+      dispatch(initializeUsers())
 
     }, [dispatch])
 
@@ -48,16 +64,6 @@ const App = () => {
   }, [blogs]);
 
 
-  /*   useEffect(() => {
-     const loggedUserJSON = window.localStorage.getItem(KEY)
-     if (loggedUserJSON) {
-       const user = JSON.parse(loggedUserJSON)
-       setUser(user)
-       blogService.setToken(user.token)
-     }
-   }, []) */
-
-
   const removeBlog = (blogObject) => {
     try{
       dispatch(deleteBlog(blogObject)),
@@ -66,23 +72,13 @@ const App = () => {
     catch{
       (dispatch(notification(`something went wrong!`, 5, "error")))
     }
- /*    blogService
-    dispatch(dummyButton(blogs.filter(b => b.id !== blogObject.id))),
-      .remove(blogObject.id)
-      .then(() => {
-      })
-      .catch(() => {
-
-      }); */
   };
-
-
-
 
 
   const handleLike = (id) => {
     const blog = blogs.find((n) => n.id === id)
    // const changedBlog = { ...blog, likes: blog.likes + 1 };
+    //console.log(users)
 
       dispatch(increaseLike(blog))
       dispatch(notification(`You liked the blog ${blog.title}"`, 5, "success"))
@@ -94,6 +90,7 @@ const App = () => {
 
     setUsername("");
     setPassword("");
+    navigate('/')
   };
 
 
@@ -153,12 +150,13 @@ const App = () => {
           <button onClick={() => setFormVisible(true)}>add blog</button>
         </div>
         <div style={showWhenVisible}>
-          <BlogForm addBlog={addBlog} user={user} />
+          <BlogForm addBlog={addBlog} />
           <button onClick={() => setFormVisible(false)}>cancel</button>
         </div>
       </div>
     );
   };
+
 
   return (
     <div>
@@ -167,21 +165,27 @@ const App = () => {
       {!user && loginForm()}
       {user && (
         <div>
-          <p>{user.username} logged in </p>
-          <button onClick={handleLogout}>Logout </button>
-          {blogForm()}
+          <Menu user = {user.username} handleLogout = {handleLogout}/>
         </div>
       )}
-      <h2>Blogs</h2>
-      {sortedBlogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          deleteBlog={removeBlog}
-          currentUser={user}
-        />
-      ))}
+      <Routes>UsersList
+        <Route path="/users/:id" element={<UserView id = {useParams()}/>} />
+        <Route path="/users" element={<UserList/>} />
+
+        <Route path="/" element={<div>
+          {blogForm()}
+          <h2>Blogs</h2>
+            {sortedBlogs.map((blog) => (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                handleLike={handleLike}
+                deleteBlog={removeBlog}
+                currentUser={user}
+              />
+            ))}
+          </div>} />
+    </Routes>
     </div>
   );
 };

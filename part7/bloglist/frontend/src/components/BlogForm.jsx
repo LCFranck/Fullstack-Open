@@ -1,7 +1,10 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector } from 'react-redux'
 
-const BlogForm = ({ addBlog, user }) => {
+
+const BlogForm = ({ addBlog }) => {
+  const user = useSelector(state => state.user)
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");

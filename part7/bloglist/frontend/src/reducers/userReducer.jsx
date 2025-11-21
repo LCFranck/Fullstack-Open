@@ -65,22 +65,5 @@ export const userLogIn = (username, password) => {
     }
   }
 }
-/*   const handleLogin = async (event) => {
-    event.preventDefault();
-
-    try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-      window.localStorage.setItem(key, JSON.stringify(user));
-      blogService.setToken(user.token);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-        (dispatch(notification(`something went wrong!`, 5, "error")))
-    }
-  }; */
 
 export default userSlice.reducer

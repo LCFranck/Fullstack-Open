@@ -1,1 +1,8 @@
-GET http://localhost:3001/api/blogs
+GET http://localhost:3001/api/users
+
+//6880d78a6bfba5a0d923e82c 
+//id fö tehe
+
+//6914946c4ac1e3c7ef96bf29
+//6914946c4ac1e3c7ef96bf29
+//id fö caca i frontend
