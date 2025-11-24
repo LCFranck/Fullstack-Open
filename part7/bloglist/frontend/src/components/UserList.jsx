@@ -2,12 +2,6 @@
 
 import { useSelector } from 'react-redux'
 
-import {
-
-  Link,
-
-} from "react-router-dom"
-
 import {  List, StyledLink, SmallTitle } from '../styled';
 
 
@@ -35,10 +29,6 @@ const UsersList = () => {
     });
 
 
- /*    <Link to={`/anecdotes/${anecdote.id}`}>
-          {anecdote.content}
-        </Link>
- */
 
   return (
     <List>

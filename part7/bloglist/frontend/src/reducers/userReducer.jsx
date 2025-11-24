@@ -2,16 +2,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import loginService from "../services/login.js";
 import blogService from "../services/blogs";
-import { notification } from "./notificationReducer"; 
+import { notification } from "./notificationReducer";
 
 
 
 const key = "loggedBlogAppUser"
 
-/* const initialState = {
-    user:null,
-    token: ""
-} */
 
 const userSlice = createSlice({
   name: 'blogs',

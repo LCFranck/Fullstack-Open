@@ -39,12 +39,14 @@ export const Button = styled.button`
 `
 
 export const SmallTitle = styled.h1`
-    font-size:  2em
+    font-size:  2em;
 
 `
 
 export const Title = styled.h1`
-    font-size:  3em
+    font-size:  3em;
+        text-align: center;
+
 
 `
 
