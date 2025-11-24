@@ -2,6 +2,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 import loginService from "../services/login.js";
 import blogService from "../services/blogs";
+import { notification } from "./notificationReducer"; 
+
 
 
 const key = "loggedBlogAppUser"
@@ -61,6 +63,7 @@ export const userLogIn = (username, password) => {
       dispatch(logIn(user))
     }
     catch (exception) {
+      (dispatch(notification(`Wrong username or password!`, 5, "error")))
        console.log("something went wrong in login!!")
     }
   }

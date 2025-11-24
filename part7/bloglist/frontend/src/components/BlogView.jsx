@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from "react";
 
+import { Button, Input } from "../styled"
+
 import {  increaseLike, deleteBlog, addComment } from  "../reducers/blogReducer";
 
 import { notification } from "../reducers/notificationReducer";
@@ -30,23 +32,7 @@ const UserView = () => {
     setComment("")
     }
 
-/*   const commentForm = () => {
-    return(
-        <form onSubmit={handleComment}>
-        <div>
-          Comment
-          <input
-            data-testid="comment"
-            type="comment"
-            value={comment}
-            name="Comment"
-            onChange={({ target }) => setComment(target.value)}
-          />
-        </div>
-        <button type="submit">add comment</button>
-      </form>
-      )
-  } */
+
 
 
 const handleDelete = () => {
@@ -74,16 +60,16 @@ const handleDelete = () => {
         <div>
         <h1> {blog.title} {blog.author}</h1>
          <p>{blog.likes} Likes</p>
-         <button onClick={() => handleLike()}>like</button>
+         <Button onClick={() => handleLike()}>like</Button>
         <p>added by {blog.user?.username || "Unknown"} </p>
         {(user && blog.user && user.username === blog.user.username) && (
-            <button onClick={() => handleDelete()}>delete</button>
+            <Button onClick={() => handleDelete()}>delete</Button>
         )
         }
         <h2>Comments</h2>
         <form onSubmit={handleComment}>
         <div>
-          <input
+          <Input
             data-testid="comment"
             type="comment"
             value={comment}
@@ -91,7 +77,7 @@ const handleDelete = () => {
             onChange={({ target }) => setComment(target.value)}
           />
         </div>
-        <button type="submit">add comment</button>
+        <Button type="submit">add comment</Button>
        </form>
        <ul>
             {blog.comments.map((comment, index) => (

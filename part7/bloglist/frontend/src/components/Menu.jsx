@@ -1,21 +1,19 @@
-import {
 
-  Link,
 
-} from "react-router-dom"
+import { Button, Navigation, StyledLink } from '../styled';
 
 
 const Menu = ({ user, handleLogout }) => {
   const padding = {
     paddingRight: 5,
-    background: "pink",
   }
   return (
     <div>
-        <Link style={padding} to="/">blogs</Link>
-        <Link style={padding} to="/users">users</Link>
+      <Navigation>
+         <StyledLink style={padding} to="/">Blogs  </StyledLink>
+        <StyledLink style={padding} to="/users">   Users</StyledLink></Navigation>
           <p>{user} logged in </p>
-          <button onClick={handleLogout}>Logout </button>
+          <Button onClick={handleLogout}>Logout </Button>
     </div>
   )
 }

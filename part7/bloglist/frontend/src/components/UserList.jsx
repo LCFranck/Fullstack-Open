@@ -8,6 +8,9 @@ import {
 
 } from "react-router-dom"
 
+import {  List, StyledLink, SmallTitle } from '../styled';
+
+
 
 //in retrospect i might nt hvae needed to create another reducer but here we are
 
@@ -38,8 +41,9 @@ const UsersList = () => {
  */
 
   return (
+    <List>
     <div>
-      <h2>Blogs</h2>
+      <SmallTitle>Authors</SmallTitle>
         <table>
         <thead>
             <tr>
@@ -51,9 +55,9 @@ const UsersList = () => {
             {Object.entries(authorList).map(([username, data]) => (
                   <tr key={username}>
                     <td>
-                        <Link to={`/users/${data.id}`}>
+                        <StyledLink to={`/users/${data.id}`}>
                             {username}
-                        </Link>
+                        </StyledLink>
                         </td>
                     <td>{data.count}</td>
                   </tr>
@@ -61,6 +65,7 @@ const UsersList = () => {
         </tbody>
         </table>
     </div>
+    </List>
   )
 }
 

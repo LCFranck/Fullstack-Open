@@ -7,6 +7,8 @@ import UserList from "./components/UserList";
 import Menu from "./components/Menu";
 import BlogView from  "./components/BlogView";
 
+import { Button, Input, Page, List, Title } from './styled';
+
 
 
 import { useDispatch, useSelector } from 'react-redux'
@@ -74,16 +76,12 @@ const App = () => {
   };
 
 
-  const handleLogin = (event) => {
+  const handleLogin =  (event) => {
     event.preventDefault();
-
-    try {
       dispatch(userLogIn(username, password))
       setUsername("");
       setPassword("");
-    } catch (exception) {
-        (dispatch(notification(`something went wrong!`, 5, "error")))
-    }
+      //notification is handeld by the reducer now, not sure if that is allowed.
   };
   const addBlog = (blogObject) => {
     dispatch(appendBlog(blogObject, user));
@@ -93,8 +91,8 @@ const App = () => {
   const loginForm = () => (
     <form onSubmit={handleLogin}>
       <div>
-        username
-        <input
+        Username
+        <Input
           data-testid="username"
           type="text"
           value={username}
@@ -103,8 +101,8 @@ const App = () => {
         />
       </div>
       <div>
-        password
-        <input
+        Password
+        <Input
           data-testid="password"
           type="password"
           value={password}
@@ -112,7 +110,7 @@ const App = () => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button type="submit">login</button>
+      <Button type="submit">Login</Button>
     </form>
   );
 
@@ -127,11 +125,11 @@ const App = () => {
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setFormVisible(true)}>add blog</button>
+          <Button onClick={() => setFormVisible(true)}>Add blog</Button>
         </div>
         <div style={showWhenVisible}>
           <BlogForm addBlog={addBlog} />
-          <button onClick={() => setFormVisible(false)}>cancel</button>
+          <Button onClick={() => setFormVisible(false)}>cancel</Button>
         </div>
       </div>
     );
@@ -139,8 +137,9 @@ const App = () => {
 
 
   return (
+    <Page>
     <div>
-      <h1>Blogs!</h1>
+      <Title>Blogs!</Title>
       <Notification />
       {!user && loginForm()}
       {user && (
@@ -155,6 +154,7 @@ const App = () => {
         <Route path="/users" element={<UserList/>} />
         <Route path="/" element={<div>
           {blogForm()}
+          <List>
           <h2>Blogs</h2>
             {sortedBlogs.map((blog) => (
               <Blog
@@ -162,9 +162,12 @@ const App = () => {
                 blog={blog}
               />
             ))}
+            </List>
           </div>} />
+
     </Routes>
     </div>
+    </Page>
   );
 };
 

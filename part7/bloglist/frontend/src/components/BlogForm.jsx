@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from 'react-redux'
-
+import { Button, Input } from '../styled';
 
 const BlogForm = ({ addBlog }) => {
   const user = useSelector(state => state.user)
@@ -29,7 +29,7 @@ const BlogForm = ({ addBlog }) => {
       <form onSubmit={blogSubmit}>
         <label>
           title
-          <input
+          <Input
             data-testid="title"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
@@ -38,7 +38,7 @@ const BlogForm = ({ addBlog }) => {
         <br />
         <label>
           author
-          <input
+          <Input
             data-testid="author"
             value={author}
             onChange={(event) => setAuthor(event.target.value)}
@@ -47,14 +47,14 @@ const BlogForm = ({ addBlog }) => {
         <br />
         <label>
           url
-          <input
+          <Input
             data-testid="url"
             value={url}
             onChange={(event) => setUrl(event.target.value)}
           />
         </label>
-        <br />
-        <button type="submit">save</button>
+        <br/>
+        <Button type="submit">save</Button>
       </form>
     </div>
   );
