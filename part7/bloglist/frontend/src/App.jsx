@@ -64,17 +64,17 @@ const App = () => {
   }, [blogs]);
 
 
-  const handleLogout = async (event) => {
+  const handleLogout = (event) => {
     event.preventDefault();
     dispatch(userLogOut())
-
+    setFormVisible(false)
     setUsername("");
     setPassword("");
     navigate('/')
   };
 
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
 
     try {

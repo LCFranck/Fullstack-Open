@@ -30,7 +30,6 @@ const remove = async (deleteObject) => {
   const config = {
     headers: { Authorization: token },
   };
-  console.log(deleteObject + "dehä e va ja vill radera!");
   const response = await axios.delete(`${baseUrl}/${deleteObject}`, config);
   return response.data;
 };
