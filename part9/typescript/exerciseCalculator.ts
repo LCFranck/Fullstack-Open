@@ -42,7 +42,7 @@ const parseArguments = (args: string[]): InputValues => {
 };
 
 
-const calculateExercises  = (a: number[], target: number): Results  => {
+export const calculateExercises  = (a: number[], target: number): Results  => {
     const periodLength = a.length
     const trainingDays = a.filter(d => d > 0 ).length
     const average = (a.reduce((sum, h) => sum + h, 0))/periodLength
@@ -77,14 +77,15 @@ const calculateExercises  = (a: number[], target: number): Results  => {
   };
 }
  
-try {
- // const values  = [1 ,3, 5, 0, 7, 3, 1]
-    const { days,  target } = parseArguments(process.argv);
-  console.log(calculateExercises(days, target));
-} catch (error: unknown) {
-  let errorMessage = 'Something bad happened.'
-  if (error instanceof Error) {
-    errorMessage += ' Error: ' + error.message;
-  }
-  console.log(errorMessage);
-}
+if (require.main === module){
+    try {
+    // const values  = [1 ,3, 5, 0, 7, 3, 1]
+        const { days,  target } = parseArguments(process.argv);
+    console.log(calculateExercises(days, target));
+    } catch (error: unknown) {
+    let errorMessage = 'Something bad happened.'
+    if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+    }
+    console.log(errorMessage);
+}}
