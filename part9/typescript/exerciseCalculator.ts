@@ -20,7 +20,7 @@ interface InputValues {
 const parseArguments = (args: string[]): InputValues => {
   if (args.length < 3) throw new Error('Not enough arguments'); 
 
-  let days: number[] = [];
+  const days: number[] = [];
   let target: number;
 
   if (!isNaN(Number(args[2]))) {
@@ -42,7 +42,7 @@ const parseArguments = (args: string[]): InputValues => {
 };
 
 
-const calculateExercises  = (a: number[], target: number) => {
+const calculateExercises  = (a: number[], target: number): Results  => {
     const periodLength = a.length
     const trainingDays = a.filter(d => d > 0 ).length
     const average = (a.reduce((sum, h) => sum + h, 0))/periodLength
