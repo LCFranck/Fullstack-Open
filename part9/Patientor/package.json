@@ -1,0 +1,28 @@
+{
+  "name": "patientor",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "cassandra franck",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "ts-node-dev index.ts",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@stylistic/eslint-plugin": "^2.13.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^4.17.25",
+    "eslint": "^9.39.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.48.0"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
