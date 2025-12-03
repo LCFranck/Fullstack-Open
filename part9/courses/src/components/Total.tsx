@@ -6,9 +6,9 @@ interface TotalProps {
 export const Total = (props: TotalProps) => {
   return (
     <div>
-        <p>
+        <h2>
           Total number of exercises  {props.totalExercises}
-        </p>
+        </h2>
     </div>
   );
 };
