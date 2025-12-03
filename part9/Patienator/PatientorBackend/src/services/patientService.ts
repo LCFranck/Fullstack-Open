@@ -1,6 +1,8 @@
 import patientData from '../../data/patients';
 
-import { Patient, NonSensitivePatient } from '../types';
+import { Patient, NonSensitivePatient, NewPatient } from '../types';
+
+import { randomUUID } from "crypto";
 
 const patients: Patient[] = patientData;
 
@@ -15,21 +17,29 @@ const getNonSensitiveEntries = (): NonSensitivePatient[] => {
     occupation  }));
   };
 
-const addPatient = () => {
-  return null;
+
+
+const findById = (id: string): Patient | undefined  => {
+    const patient = patients.find(d => d.id === id);  
+    return patient;
+  };
+
+
+const addPatient = ( patient: NewPatient ): Patient => {
+  const newId = randomUUID();
+
+  const newPatient = {
+    id: newId, ///ändra dehä
+    ...patient
+  };
+
+  patients.push(newPatient);
+  return newPatient;
 };
-
-/*    {
-        "id": "d2773598-f723-11e9-8f0b-362b9e155667",
-        "name": "Martin Riggs",
-        "dateOfBirth": "1979-01-30",
-        "ssn": "300179-77A",
-        "gender": "male",
-        "occupation": "Cop"
-    }, */
-
+  
 export default {
   getPatients,
   getNonSensitiveEntries,
-  addPatient
+  addPatient,
+  findById
 };
