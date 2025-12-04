@@ -49,22 +49,66 @@ const App = () => {
       <p style={{ color: 'red' }}>{errorMessage}</p>
       <form onSubmit={entryCreation}>
         <label>date
-         <input
-          value={date}
-          onChange={(event) => setDate(event.target.value)} 
-        />
+         
+      <input type="date" value={date} onChange={(e) => setDate(e.target?.value)} />
         </label>
         <br />
          <label>weather <input
-          value={weather}
-          onChange={(event) => setWeather(event.target.value)} 
+          type="radio"
+          name="weather"
+          onChange={() => setWeather('sunny')}
         />
+        sunny
+        <input
+          type="radio"
+          name="weather"
+          onChange={() => setWeather('rainy')}
+        />
+        rainy
+        <input
+          type="radio"
+          name="weather"
+          onChange={() => setWeather('cloudy')} 
+        />
+        cloudy
+        <input
+          type="radio"
+          name="weather"
+          onChange={() => setWeather('stormy')} 
+        />
+        stormy
+        <input
+          type="radio"
+          name="weather"
+          onChange={() => setWeather('windy')} 
+        />
+        windy
         </label>
         <br />
         <label>visibility <input
-          value={visibility}
-          onChange={(event) => setVisibility(event.target.value)} 
+          type="radio"
+          name="visibility"
+          onChange={() => setVisibility('great')}
         />
+        great
+        <input
+          type="radio"
+          name="visibility"
+          onChange={() => setVisibility('good')}
+        />
+        good
+        <input
+          type="radio"
+          name="visibility"
+          onChange={() => setVisibility('ok')}
+        />
+        ok
+        <input
+          type="radio"
+          name="visibility"
+          onChange={() => setVisibility('poor')}
+        />
+        poor
         </label>
         <br />
         <label>comment <input
@@ -74,6 +118,7 @@ const App = () => {
         </label>
         <br />
         <button type='submit'>add</button>
+        
       </form>
       <ul>
         {entries.map(entry =>
@@ -88,5 +133,6 @@ const App = () => {
     </div>
   )
 }
-
+//THIS LOOKS VERY BAD
 export default App;
+
