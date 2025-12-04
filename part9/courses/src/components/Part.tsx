@@ -17,23 +17,25 @@ export const Part = (props: PartProps) => {
         case "basic":
             return <>
                 <h3>{props.coursepart.name} {props.coursepart.exerciseCount}</h3>  
-                <p>Description: {props.coursepart.description}</p> 
+                <ul>Description: {props.coursepart.description}</ul> 
                 </>      
         case "group":
             return <>
                 <h3>{props.coursepart.name} {props.coursepart.exerciseCount}</h3>
-                 <p>Group projects:{props.coursepart.groupProjectCount} </p>
+                 <ul>Group projects: {props.coursepart.groupProjectCount} </ul>
             </>
         case "background":
             return <>
                 <h3>{props.coursepart.name} {props.coursepart.exerciseCount}</h3>
-                <p>Background material: {props.coursepart.backgroundMaterial} </p>
+                <ul>Description: {props.coursepart.description}</ul> 
+                <ul>Background material: {props.coursepart.backgroundMaterial} </ul>
 
                 </>
         case "special":
             return <>
                 <h3> {props.coursepart.name} {props.coursepart.exerciseCount}</h3>
-                <p>Requirements: {props.coursepart.requirements.join(', ')}</p>
+                <ul>Description: {props.coursepart.description}</ul> 
+                <ul>Requirements: {props.coursepart.requirements.join(', ')}</ul>
 
             </>
         default:
