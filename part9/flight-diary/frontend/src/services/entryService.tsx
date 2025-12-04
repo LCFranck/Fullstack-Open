@@ -15,7 +15,7 @@ export const createEntry = async (object: NewEntry) => {
     console.log("I making an entry");
     return response.data
     
-} catch (error: unknown){
+  } catch (error: unknown){
     if (axios.isAxiosError(error)) {
       console.log(error.status)
       console.error(error.response?.data);   
