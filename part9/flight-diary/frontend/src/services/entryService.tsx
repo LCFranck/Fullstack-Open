@@ -9,8 +9,21 @@ export const getAllEntries = () => {
     .then(response => response.data)
 }
 
-export const createEntry = (object: NewEntry) => {
-  return axios
-    .post<Entry>(baseUrl, object)
-    .then(response => response.data)
+export const createEntry = async (object: NewEntry) => {
+  try{
+    const response = await axios.post<Entry>(baseUrl, object)
+    console.log("I making an entry");
+    return response.data
+    
+} catch (error: unknown){
+    if (axios.isAxiosError(error)) {
+      console.log(error.status)
+      console.error(error.response?.data);   
+    } else {
+      console.error(error);
+    }
+    throw error;
+  }
+  
 }
+

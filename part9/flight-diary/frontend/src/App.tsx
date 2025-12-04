@@ -14,6 +14,8 @@ const App = () => {
     const [date, setDate] = useState<string>("");
     const [comment, setComment] = useState<string>("");
 
+    const [errorMessage, setErrorMessage] = useState <string>("");
+
 
 
   useEffect(() => {
@@ -26,18 +28,25 @@ const App = () => {
     event.preventDefault()
     createEntry({ date: date, weather : weather, visibility:visibility, comment:comment }).then(data => {
       setEntries(entries.concat(data))
-    })
-    setWeather('')
-    setVisibility('')
-    setDate('')
-    setComment('')
+      setWeather('')
+      setVisibility('')
+      setDate('')
+      setComment('')
+    }).catch(err => {
+      console.log("Failed to create entry:", err.response?.data);
+      setErrorMessage("Failed to create entry: " + err.response?.data)
+      setTimeout(() => { setErrorMessage("")}, 5000)
+    });
+   
   };
+
 
   
 
    return (
     <div>
       <h1>Welcome to my flight diary!</h1>
+      <p style={{ color: 'red' }}>{errorMessage}</p>
       <form onSubmit={entryCreation}>
         <label>date
          <input
