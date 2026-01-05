@@ -6,6 +6,12 @@ import { Patient, Entry, Diagnosis } from "../../types";
 import patientService from "../../services/patients";
 import diagnosisService from "../../services/diagnoses";
 
+import { Box, List, ListItem, Typography } from '@mui/material';
+
+import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
+import WorkIcon from '@mui/icons-material/Work';
+
 
 /* interface Props {
 
@@ -48,28 +54,53 @@ const PatientInfo = () => {
         return diagnosis?.name;
     };
 
-// i have a spelling error where i call ssh ssn, dont know where this started might fix it might not
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
+};
+
+
+    const EntryDetails: React.FC<{entry: Entry}> = ({ entry }) => {
+        switch(entry.type){
+            case "Hospital":
+                return (<LocalHospitalIcon/>);
+            case "HealthCheck":
+                return <MonitorHeartIcon/>;
+            case "OccupationalHealthcare":
+                return (<ListItem>  <WorkIcon/> {entry.employerName} </ListItem>);
+            default: 
+                assertNever(entry);
+        }
+
+    };
+//matieralUI is bullshit and i hate it
   return(
-    <div>
-        <h1>{patient.name}</h1>
-        <p>ssh: {patient.ssn}</p>
-        <p>occupation: {patient.occupation}</p>
-        <h2> entries </h2>
+    <Box>
+        <Typography variant="h3">{patient.name}</Typography>
+        <Typography variant= "body1" > ssn: {patient.ssn}</Typography>
+        <Typography variant= "body1" > occupation: {patient.occupation}</Typography>
+        <Typography variant="h4" > entries </Typography>
         {patient.entries.map((entry: Entry) => (
-            <div key={entry.id}>
-            <p> {entry.date} {entry.description }</p>
-        
+            <Box key={entry.id} sx={{ marginBottom: 2, padding: 1, border: '1px solid #000000ff', borderRadius: 3 }}>
+                <List>
+            <ListItem> {entry.date} <EntryDetails entry={entry} /> </ListItem>
+            <ListItem>
+                {entry.description }
+            </ListItem>
+
             {entry.diagnosisCodes?.map((code: string) => (
-                <li key={code}> {code} {findDiagnosis(code)} </li>
+                <ListItem key={code}> {code} {findDiagnosis(code)} </ListItem>
             ))}
             
-            <li> {entry.type} </li>
-            </div>
+            <ListItem> {entry.type} </ListItem>
+            </List>
+            </Box>
 
         ))}
 
      
-    </div>
+    </Box>
     );
 
     
