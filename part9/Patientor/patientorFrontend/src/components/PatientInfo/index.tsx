@@ -181,7 +181,7 @@ const assertNever = (value: never): never => {
         diagnoses={diagnoses ?? []}
       />
        <Button variant="contained" onClick={() => openModal()}>
-        Add New Patient
+        Add New Entry
       </Button>
        
     </Box>
