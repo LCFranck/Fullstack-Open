@@ -5,7 +5,7 @@ import { newPatientSchema } from '../utils';
 
 import { z } from 'zod';
 
-import { NewPatient } from '../types';
+import { NewPatient, EntryWithoutId } from '../types';
 
 
 const router = express.Router();
@@ -27,7 +27,45 @@ router.get('/:id', (req, res) => {
 });
 
 
-const newDiaryParser = (req: Request, _res: Response, next: NextFunction) => { 
+/* const parseDiagnosisCodes = (object: unknown): Array<Diagnosis['code']> =>  {
+  if (!object || typeof object !== 'object' || !('diagnosisCodes' in object)) {
+    return [] as Array<Diagnosis['code']>;
+  }
+
+  return object.diagnosisCodes as Array<Diagnosis['code']>;
+};
+ */
+//Patient parser!
+/* const newEntryParser = (req: Request, _res: Response, next: NextFunction) => { 
+  try {
+    newPatientSchema.parse(req.body);
+    console.log(req.body);
+    next();
+  } catch (error: unknown) {
+    next(error);
+  }
+}; */
+
+//used for creating new entries
+router.post('/:id/entries', (req: Request<{id: string}, unknown, EntryWithoutId>, res: Response<EntryWithoutId>) => {
+  
+  try{
+    const patientId = req.params?.id;
+    const newEntry = (req.body);
+
+  const addedEntry = patientService.addEntry(newEntry, patientId);
+  res.json(addedEntry);
+  }
+
+
+catch(error: unknown){
+  console.log("error", error);
+  res.sendStatus(404);
+
+}});
+
+//Patient parser!
+const newPatientParser = (req: Request, _res: Response, next: NextFunction) => { 
   try {
     newPatientSchema.parse(req.body);
     console.log(req.body);
@@ -45,25 +83,11 @@ const errorMiddleware = (error: unknown, _req: Request, res: Response, next: Nex
   }
 };
 
-router.post('/', newDiaryParser, (req: Request<unknown, unknown, NewPatient>, res: Response<NewPatient>) => {
+router.post('/', newPatientParser, (req: Request<unknown, unknown, NewPatient>, res: Response<NewPatient>) => {
   const addedPatient = patientService.addPatient(req.body);
   res.json(addedPatient);
 });
 
-/* router.post('/', (req, res) => {
-  try {
-    const newPatient = newPatientSchema.parse(req.body);
-    const addedPatient = patientService.addPatient(newPatient);
-    res.json(addedPatient);
-
-  } catch (error: unknown) {
-    let errorMessage = 'Something went wrong :(';
-    if (error instanceof Error) {
-      errorMessage = 'Error: ' + error.message;
-    }
-    res.status(400).send(errorMessage);
-  }
-}); */
 
 router.use(errorMiddleware);
 

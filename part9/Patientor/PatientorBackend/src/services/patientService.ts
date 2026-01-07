@@ -1,10 +1,13 @@
 import patientData from '../../data/patients';
 
-import { Patient, NonSensitivePatient, NewPatient } from '../types';
+import { Patient, NonSensitivePatient, NewPatient , EntryWithoutId, Entry} from '../types';
 
 import { randomUUID } from "crypto";
 
 const patients: Patient[] = patientData;
+
+//const entries: Entry[] = patientData;
+
 
 const getPatients = (): Patient[] => {  return patients;};
 
@@ -32,16 +35,36 @@ const addPatient = ( patient: NewPatient ): Patient => {
   const newPatient = {
     id: newId,
     ...patient,
-    entries: [] //change this later!! (maybe)
+    entries: []
   };
 
   patients.push(newPatient);
   return newPatient;
 };
+
+
+const addEntry = ( entry: EntryWithoutId, patientID: string ): Entry => {
+
+   const patient = patients.find(p => p.id === patientID);
+   
+  if (!patient) {
+    throw new Error('Patient not found');
+  }
+  const newId = randomUUID();
+  const newEntry = {
+    id: newId,
+    ...entry,
+  };
+
+  patient.entries.push(newEntry);
+  return newEntry;
+};
+  
   
 export default {
   getPatients,
   getNonSensitiveEntries,
   addPatient,
-  findById
+  findById,
+  addEntry
 };

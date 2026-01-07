@@ -1,16 +1,21 @@
 //import { Dialog, DialogTitle, DialogContent, Divider, Alert } from '@mui/material';
-
+ 
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Patient, Entry, Diagnosis } from "../../types";
+import { Patient, Entry, Diagnosis, EntryFormValues } from "../../types";
 import patientService from "../../services/patients";
 import diagnosisService from "../../services/diagnoses";
 
-import { Box, List, ListItem, Typography } from '@mui/material';
+import { Box, List, ListItem, Typography, Button } from '@mui/material';
 
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import MonitorHeartIcon from '@mui/icons-material/MonitorHeart';
 import WorkIcon from '@mui/icons-material/Work';
+
+import EntryForm from "../EntryForm";
+
+import axios from 'axios';
+
 
 
 /* interface Props {
@@ -18,6 +23,11 @@ import WorkIcon from '@mui/icons-material/Work';
 }  */
 
 const PatientInfo = () => {
+
+    
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [error, setError] = useState<string>();
+
    
     const  id  = String(useParams().id);
 
@@ -41,6 +51,41 @@ const PatientInfo = () => {
     
     void fetchData();
   }, [id]);
+
+
+    const openModal = (): void => setModalOpen(true);
+
+  const closeModal = (): void => {
+    setModalOpen(false);
+    setError(undefined);
+  };
+
+  /*  const submitNewEntry =  () => {
+    setModalOpen(false);
+      console.log("howdy");
+    }; */
+
+    const submitNewEntry = async (values: EntryFormValues) => {
+    try {
+      const entry = await patientService.addEntry(values, id);
+      patient?.entries.concat(entry);
+      setModalOpen(false);
+
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (e?.response?.data && typeof e?.response?.data === "string") {
+          const message = e.response.data.replace('Something went wrong. Error: ', '');
+          console.error(message);
+          setError(message);
+        } else {
+          setError("Unrecognized axios error");
+        }
+      } else {
+        console.error("Unknown error", e);
+        setError("Unknown error");
+      }
+    }
+  };
   
     console.log(patient);
 
@@ -99,7 +144,17 @@ const assertNever = (value: never): never => {
 
         ))}
 
-     
+     <EntryForm
+        modalOpen={modalOpen}
+        onSubmit={submitNewEntry}
+        error={error}
+        onClose={closeModal}
+        diagnoses={diagnoses ?? []}
+      />
+       <Button variant="contained" onClick={() => openModal()}>
+        Add New Patient
+      </Button>
+       
     </Box>
     );
 
