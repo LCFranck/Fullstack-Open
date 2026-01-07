@@ -4,7 +4,7 @@ import {  TextField, InputLabel, MenuItem, Select, Grid, Button, SelectChangeEve
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-import { EntryFormValues, EntryType, HealthCheckRating, Diagnosis } from "../../types";
+import { EntryFormValues, EntryType, Diagnosis } from "../../types";
 
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
@@ -18,30 +18,14 @@ interface Props {
   diagnoses: Diagnosis[];
 }
 
-/* interface GenderOption{
-  value: Gender;
-  label: string;
-} */
-
-/* interface HealthCheckRating {
-    value: HealthCheckRating;
-    label: number; 
-} */
-/* 
-const genderOptions: GenderOption[] = Object.values(Gender).map(v => ({
-  value: v, label: v.toString()
-})); */
-
 
 
 const AddPatientForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
     //base entry variables
     const [description, setDescription] = useState('');
     const [specialist, setSpecialist] = useState('');
-   // const [diagnosisString, setDiagnosisString] = useState('');
     const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);
     const [date, setDate] = useState('');
-   // const [gender, setGender] = useState(Gender.Other);
 
     //hospital specifics and type
     const [type, setType] = useState<EntryType>("Hospital");
@@ -54,23 +38,12 @@ const AddPatientForm = ({ onCancel, onSubmit, diagnoses }: Props) => {
     const [sickLeaveEnd, setSickLeaveEnd] =  useState('');
 
   //health checkup specific
-  const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
-   // healthCheckRating: number; //this could be the enum aswell? unsure if its needed to validate but on server and client
+  const [healthCheckRating, setHealthCheckRating] = useState(1);
+  const ratingOptions: number[] = [0,1,2,3];
 
 
     const types: EntryType[] = ["Hospital", "HealthCheck", "OccupationalHealthcare"];
 
- /*  const onGenderChange = (event: SelectChangeEvent<string>) => {
-    event.preventDefault();
-    if ( typeof event.target.value === "string") {
-      const value = event.target.value;
-      const gender = Object.values(Gender).find(g => g === value);
-      if (gender) {
-        setGender(gender);
-      }
-    }
-  };
- */
 const onDiagnosisChange = (event: SelectChangeEvent<string[]>) => {
   const value = event.target.value;
 
@@ -85,11 +58,7 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
 };
 
 
-/*  
- const [employerName, setEmployerName] =  useState('');
-    const [sickLeaveStart, setSickLeaveStart] =  useState('');
-    const [sickLeaveEnd, setSickLeaveEnd] =  useState('');
-   */
+
  const addEntry = (event: SyntheticEvent) => {
     event.preventDefault();
     const codesToSubmit =  diagnosisCodes.length > 0 ? diagnosisCodes : undefined;
@@ -109,7 +78,6 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
                     
                 });
                 break;
-              //  return (<div> hello </div>);
             }
             case "HealthCheck": {
                   onSubmit({
@@ -122,7 +90,6 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
                 });
             }
             break;
-             //   return (<div></div>)
             case "OccupationalHealthcare":{
                  const sickLeave = sickLeaveStart && sickLeaveEnd? {
                         startDate: sickLeaveStart,
@@ -139,11 +106,13 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
                     type
                 });
                 break;
-             //return (<div></div>);
             }
   }
 };
-
+const onRatingChange = (event: SelectChangeEvent<number>) =>{
+  setHealthCheckRating(event.target.value as number);
+  console.log(type);
+};
 
   const specificEntries = () => {
     switch(type){
@@ -170,14 +139,25 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
                 );
             case "HealthCheck":
                 return (<div>
-                    <TextField
-                        label="healthCheckRating"
-                        fullWidth
-                        value={healthCheckRating}
-                        onChange={({ target }) => setHealthCheckRating(Number(target.value))}
-                    /> 
-                  
+                 
+                        <InputLabel style={{ marginTop: 20 }}>Health rating</InputLabel>
+                    <Select
+                    label="Health Rating"
+                    fullWidth
+                    value={healthCheckRating}
+                    onChange={onRatingChange}
+                    >
+                    {ratingOptions.map(option =>
+                    <MenuItem
+                        key={option}
+                        value={option}
+                    >
+                        {option
+                    }</MenuItem>
+                    )}
+                    </Select>
                     
+             
                     </div>
                 );
             case "OccupationalHealthcare":
@@ -192,38 +172,26 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
                         <DatePicker
                         label="Sickleave start date"
                         defaultValue={dayjs('2026-01-01')}
-                         value={sickLeaveStart ? dayjs(sickLeaveStart) : null} //chnage sickleavestart to dayjs (might not be otimal solution to chnage back and forth)
+                         value={sickLeaveStart ? dayjs(sickLeaveStart) : null} 
                         onChange={(newValue: Dayjs | null) => {
-                        if (newValue) setSickLeaveStart(newValue.format('YYYY-MM-DD')); // dayjs format returns a string!
+                        if (newValue) setSickLeaveStart(newValue.format('YYYY-MM-DD'));
                         else setSickLeaveStart('');
                         }}   
                         />
                         </LocalizationProvider>
-                  {/*   <TextField
-                        label="Sickleave start date"
-                        placeholder="YYYY-MM-DD"
-                        fullWidth
-                        value={sickLeaveStart}
-                        onChange={({ target }) => setSickLeaveStart(target.value)}
-                    /> */}
+                
                      <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
                         label="Sickleave end date"
                         defaultValue={dayjs('2026-01-01')}
-                        value={sickLeaveEnd ? dayjs(sickLeaveEnd) : null} //chnage sickleavestart to dayjs (might not be otimal solution to chnage back and forth)
+                        value={sickLeaveEnd ? dayjs(sickLeaveEnd) : null} 
                         onChange={(newValue: Dayjs | null) => {
-                        if (newValue) setSickLeaveEnd(newValue.format('YYYY-MM-DD')); // dayjs format returns a string!
+                        if (newValue) setSickLeaveEnd(newValue.format('YYYY-MM-DD')); 
                         else setSickLeaveEnd('');
                         }}   
                         />
                         </LocalizationProvider>
-                 {/*    <TextField
-                        label="Sickleave end date"
-                        placeholder="YYYY-MM-DD"
-                        fullWidth
-                        value={sickLeaveEnd}
-                        onChange={({ target }) => setSickLeaveEnd(target.value)}
-                    /> */}
+               
                     </div>
                 );
             default: 
@@ -231,10 +199,7 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
         }
 
   };
- /* const [description, setDescription] = useState('');
-    const [specialist, setSpecialist] = useState('');
-    const [diagnosisCodes, setDiagnosisCodes] = useState<string[]>([]);;
-    const [date, setDate] = useState(''); */
+
 
   return (
     <div>
@@ -271,15 +236,14 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
                         <DatePicker
                         label="Date"
                         defaultValue={dayjs('2026-01-01')}
-                         value={date ? dayjs(date) : null} //chnage sickleavestart to dayjs (might not be otimal solution to chnage back and forth)
+                         value={date ? dayjs(date) : null} 
                         onChange={(newValue: Dayjs | null) => {
-                        if (newValue) setDate(newValue.format('YYYY-MM-DD')); // dayjs format returns a string!
+                        if (newValue) setDate(newValue.format('YYYY-MM-DD')); 
                         else setDate('');
                         }}   
                         />
                         </LocalizationProvider>
         
-        {specificEntries()/* checks what type of entry is made and shows relevant input */}
         <Select
             multiple
             label="Diagnosis"
@@ -294,11 +258,10 @@ const onTypeChange = (event: SelectChangeEvent<EntryType>) => {
             >
                 {diagnosis.code
             }</MenuItem>
-            )
-            
-            }
-            
+            )}
             </Select>
+        {specificEntries()/* checks what type of entry is made and shows relevant input */}
+
 
 
         <Grid>

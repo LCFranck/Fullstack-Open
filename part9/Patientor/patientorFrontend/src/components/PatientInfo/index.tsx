@@ -33,7 +33,7 @@ const PatientInfo = () => {
 
     const [patient, setPatient] = useState<Patient | null>(null);
 
-    const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
+    const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null); 
 
 
  useEffect(() => {
@@ -60,33 +60,35 @@ const PatientInfo = () => {
     setError(undefined);
   };
 
-  /*  const submitNewEntry =  () => {
-    setModalOpen(false);
-      console.log("howdy");
-    }; */
+
 
     const submitNewEntry = async (values: EntryFormValues) => {
-    try {
-      const entry = await patientService.addEntry(values, id);
-      patient?.entries.concat(entry);
-      setModalOpen(false);
+        try {
+        const entry = await patientService.addEntry(values, id);
 
-    } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
-        if (e?.response?.data && typeof e?.response?.data === "string") {
-          const message = e.response.data.replace('Something went wrong. Error: ', '');
-          console.error(message);
-          setError(message);
-        } else {
-          setError("Unrecognized axios error");
+        if (patient) {
+        setPatient({...patient, entries: [...patient.entries, entry] 
+        });
         }
-      } else {
-        console.error("Unknown error", e);
-        setError("Unknown error");
-      }
-    }
-  };
-  
+
+        setModalOpen(false);
+
+        } catch (e: unknown) {
+        if (axios.isAxiosError(e)) {
+            if (e?.response?.data && typeof e?.response?.data === "string") {
+            const message = e.response.data.replace('Something went wrong. Error: ', '');
+            console.error(message);
+            setError(message);
+            } else {
+            setError("Unrecognized axios error");
+            }
+        } else {
+            console.error("Unknown error", e);
+            setError("Unknown error");
+        }
+        }
+    };
+    
     console.log(patient);
 
     if (!patient) {
@@ -106,20 +108,46 @@ const assertNever = (value: never): never => {
 };
 
 
-    const EntryDetails: React.FC<{entry: Entry}> = ({ entry }) => {
+    const TypeLogo: React.FC<{entry: Entry}> = ({ entry }) => {
         switch(entry.type){
             case "Hospital":
                 return (<LocalHospitalIcon/>);
             case "HealthCheck":
                 return <MonitorHeartIcon/>;
             case "OccupationalHealthcare":
-                return (<ListItem>  <WorkIcon/> {entry.employerName} </ListItem>);
+                return (<div><WorkIcon/> {entry.employerName} 
+                
+                </div>);
             default: 
                 assertNever(entry);
         }
 
     };
-//matieralUI is bullshit and i hate it
+
+        const TypeDetails: React.FC<{entry: Entry}> = ({ entry }) => {
+            switch(entry.type){
+            case "Hospital":
+                return (<div>
+                    <ListItem> discharge criteria: {entry.discharge?.criteria}</ListItem>
+                    <ListItem> discharge date: {entry.discharge?.date}</ListItem>
+
+                </div>);            
+            case "HealthCheck":
+                return (<div>
+                    <ListItem> health check rating: {entry.healthCheckRating} </ListItem>
+                </div>);            
+            case "OccupationalHealthcare":
+                return (<div>
+                    <ListItem> sick leave start date {entry.sickLeave?.startDate} </ListItem>  
+                    <ListItem> sick leave end date {entry.sickLeave?.endDate} </ListItem>   
+ 
+                </div>);
+            default: 
+                assertNever(entry);
+        }
+        };
+
+
   return(
     <Box>
         <Typography variant="h3">{patient.name}</Typography>
@@ -129,7 +157,7 @@ const assertNever = (value: never): never => {
         {patient.entries.map((entry: Entry) => (
             <Box key={entry.id} sx={{ marginBottom: 2, padding: 1, border: '1px solid #000000ff', borderRadius: 3 }}>
                 <List>
-            <ListItem> {entry.date} <EntryDetails entry={entry} /> </ListItem>
+            <ListItem> {entry.date} <TypeLogo entry={entry} /> </ListItem>
             <ListItem>
                 {entry.description }
             </ListItem>
@@ -139,6 +167,7 @@ const assertNever = (value: never): never => {
             ))}
             
             <ListItem> {entry.type} </ListItem>
+            <TypeDetails entry={entry}/>
             </List>
             </Box>
 
